@@ -45,7 +45,7 @@ struct Datos{ // Almacena datos del jugador
 	int CantXP = 0;
 	int CantXPMaxima = 50;
 	int Oro = 50;
-	int InvUsado = 0;
+	int InvUsado = 1;
 	int puntosDisp = 0;
 	Estadisticas Caracteristicas;
 	Armamento ArmaEquipada;
@@ -87,6 +87,7 @@ bool turnoEnemigo = false;
 bool jugadorEnvenenado = false;
 bool enemigoEnvenenado = false;
 bool enCombate = false;
+
 Enemigo Enemigo;
 
 // variables del mercader
@@ -103,6 +104,7 @@ void mostStats();
 void interactuar();
 void combate();
 void mostCombate();
+void obtenerLoot();
 
 void jugar(){
 	enCombate = false;
@@ -153,6 +155,7 @@ string agregarArmadura(int id, int nivel, string nombre, Armadura datos){
 				Inventario[i].nivel = nivel;
 				Inventario[i].Nombre = nombre;
 				Inventario[i].DatosB = datos;
+				Jugador.InvUsado++;
 				break;
 			}
 		}
@@ -178,6 +181,7 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 				Inventario[i].nivel = nivel;
 				Inventario[i].Nombre = nombre;
 				Inventario[i].Datos = datos;
+				Jugador.InvUsado++;
 				break;
 			}
 		}
@@ -195,6 +199,7 @@ string agregarItem(int id, int nivel, string nombre){
 				Inventario[i].id = id;
 				Inventario[i].nivel = nivel;
 				Inventario[i].Nombre = nombre;
+				Jugador.InvUsado++;
 				break;
 			}
 		}
@@ -237,6 +242,293 @@ string usarItem(int id, int nivel, int Opcion){
 	return "Invalido.";
 }
 
+void obtenerLoot(){
+	if (Jugador.InvUsado < 10){
+		Item loot;
+		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		srand(time(0));
+		int N = ((rand() % 26));
+		if (N == 0){
+		   	loot.id = 1;
+		   	loot.nivel = Jugador.Nivel;
+		   	loot.Nombre = "Pocion de Curacion";
+		   	agregarItem(loot.id, loot.nivel, loot.Nombre);
+		}
+		else if (N == 1){
+			loot.id = 2;
+		   	loot.nivel = Jugador.Nivel;
+		   	loot.Nombre = "Pocion del Mentor";
+		   	agregarItem(loot.id, loot.nivel, loot.Nombre);
+		}
+		else if (N == 2){
+			loot.id = 3;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Daga comun";
+			loot.Datos.DMGF = 8 * Jugador.Nivel;
+			loot.Datos.DMGV = 2 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Daga";
+			loot.Datos.Nombre = "Daga comun";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 3){
+			loot.id = 3;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Daga del Novato";
+			loot.Datos.DMGF = 9 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Daga";
+			loot.Datos.Nombre = "Daga del Novato";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 4){
+			loot.id = 3;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Daga oxidada";
+			loot.Datos.DMGF = 7 * Jugador.Nivel;
+			loot.Datos.DMGV = 3 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Daga";
+			loot.Datos.Nombre = "Daga oxidada";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 5){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada del Inframundo";
+			loot.Datos.DMGF = 13 * Jugador.Nivel;
+			loot.Datos.DMGFG = 10 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada del Inframundo";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 6){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada de Astolfo";
+			loot.Datos.DMGF = 17 * Jugador.Nivel;
+			loot.Datos.DMGFG = 3 * Jugador.Nivel;
+			loot.Datos.DMGM = 6 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada de Astolfo";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 7){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada de la Magia Oscura";
+			loot.Datos.DMGF = 4 * Jugador.Nivel;
+			loot.Datos.DMGM = 10 * Jugador.Nivel;
+			loot.Datos.DMGV = 3 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada de la Magia Oscura";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 8){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada del Angel";
+			loot.Datos.DMGF = 14 * Jugador.Nivel;
+			loot.Datos.DMGM = 4 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada del Angel";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 9){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada de la Lealtad";
+			loot.Datos.DMGF = 17 * Jugador.Nivel;
+			loot.Datos.DMGFG = 2 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada de la Lealtad";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 10){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada del plebeyo";
+			loot.Datos.DMGF = 9 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada del plebeyo";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 11){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada del Rey";
+			loot.Datos.DMGF = 15 * Jugador.Nivel;
+			loot.Datos.DMGFG = 7 * Jugador.Nivel;
+			loot.Datos.DMGM = 4 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada del Rey";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 12){
+			loot.id = 5;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Hacha desgastada";
+			loot.Datos.DMGF = 13 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Hacha";
+			loot.Datos.Nombre = "Hacha desgastada";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 13){
+			loot.id = 5;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Hacha del Guerrero";
+			loot.Datos.DMGF = 17 * Jugador.Nivel;
+			loot.Datos.DMGFG = 6 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Hacha";
+			loot.Datos.Nombre = "Hacha del Guerrero";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 14){
+			loot.id = 5;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Hacha del Novato";
+			loot.Datos.DMGF = 11 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Hacha";
+			loot.Datos.Nombre = "Hacha del Novato";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 15){
+			loot.id = 5;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Hacha de la Sabiduria";
+			loot.Datos.DMGF = 10 * Jugador.Nivel;
+			loot.Datos.DMGM = 14 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Hacha";
+			loot.Datos.Nombre = "Hacha de la Sabiduria";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 16){
+			loot.id = 5;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Hacha venenosa";
+			loot.Datos.DMGF = 15 * Jugador.Nivel;
+			loot.Datos.DMGV = 8 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Hacha";
+			loot.Datos.Nombre = "Hacha venenosa";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 17){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura del Ladron";
+			loot.DatosB.RESF = 9 * Jugador.Nivel;
+			loot.DatosB.RESV = 5 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura del Ladron";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 18){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura de la Realeza";
+			loot.DatosB.RESF = 14 * Jugador.Nivel;
+			loot.DatosB.RESV = 2 * Jugador.Nivel;
+			loot.DatosB.RESFG = 5 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura de la Realeza";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 19){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura de Astolfo";
+			loot.DatosB.RESF = 15 * Jugador.Nivel;
+			loot.DatosB.RESV = 7 * Jugador.Nivel;
+			loot.DatosB.RESFG = 4 * Jugador.Nivel;
+			loot.DatosB.RESM = 6 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura de Astolfo";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 20){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura del Diablo";
+			loot.DatosB.RESF = 15 * Jugador.Nivel;
+			loot.DatosB.RESFG = 9 * Jugador.Nivel;
+			loot.DatosB.RESM = 3 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura del Diablo";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 21){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura del Gato";
+			loot.DatosB.RESF = 16 * Jugador.Nivel;
+			loot.DatosB.RESV = 3 * Jugador.Nivel;
+			loot.DatosB.RESM = 2 * Jugador.Nivel;
+			loot.DatosB.RESFG = 5 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura del Gato";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 22){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura del Emperador";
+			loot.DatosB.RESF = 17 * Jugador.Nivel;
+			loot.DatosB.RESM = 4 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura del Emperador";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 23){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura celestial";
+			loot.DatosB.RESF = 7 * Jugador.Nivel;
+			loot.DatosB.RESM = 18 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura celestial";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 24){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura del Enfermo";
+			loot.DatosB.RESF = 12 * Jugador.Nivel;
+			loot.DatosB.RESV = 17 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura del Enfermo";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 25){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura del Rey";
+			loot.DatosB.RESF = 16 * Jugador.Nivel;
+			loot.DatosB.RESV = 6 * Jugador.Nivel;
+			loot.DatosB.RESFG = 4 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura del Rey";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		texto = texto + "\nEl enemigo dropeo " + loot.Nombre + " y ahora esta en tu inventario.";
+	}
+	else{
+		texto = "\nEl enemigo dropeo un item pero tu inventario esta lleno.";
+	}
+	jugar();
+}
+
 string equiparArma(int Opcion){
 	if (Jugador.Nivel >= Inventario[Opcion].Datos.Nvl){
 		Jugador.ArmaEquipada = Inventario[Opcion].Datos;
@@ -260,20 +552,6 @@ string equiparArmadura(int Opcion){
 }
 
 void interactuar(){
-	Armamento Daga;
-	Daga.DMGF = 8;
-	Daga.DMGFG = 9;
-	Daga.DMGV = 2;
-	Daga.DMGM = 5;
-	Daga.Nombre = "Daga del Astolfo";
-	Daga.Nvl = 1;
-	Daga.Tipo = "Daga";
- 	agregarArma(3, Daga.Nvl, "Daga del Astolfo", Daga);
- 	Armadura P;
- 	P.RESF = 16924;
- 	P.Nombre = "Armadura del Astolfo";
- 	P.Nvl = 1;
- 	agregarArmadura(4, P.Nvl, "Armadura del Astolfo", P);
 	if (mercaderActivo == true){
 		if (Jugador.Oro >= mercaderPrecio && Jugador.InvUsado < 10){
 			Jugador.Oro = Jugador.Oro - mercaderPrecio;
@@ -364,6 +642,9 @@ void inv(){ // Inventario
 						Jugador.ArmaduraEquipada.Nvl = Jugador.Nivel;
 					}
 					else{
+						for (int i=0;i<10;i++){
+							Inventario[i].DatosB.enUso = false;
+						}
 						texto2 = equiparArmadura(Opcion);
 					}
 				}
@@ -381,6 +662,9 @@ void inv(){ // Inventario
 					Jugador.ArmaEquipada.Nvl = Jugador.Nivel;
 				}
 				else{
+					for (int i=0;i<10;i++){
+						Inventario[i].Datos.enUso = false;
+					}
 					texto2 = equiparArma(Opcion);
 				}
 			}
@@ -607,7 +891,7 @@ void mostCombate(){
 	cout << "\n" << texto2;
 	enemigoEnvenenado = false;
 	if (turnoEnemigo == true){
-		cout << "Turno del enemigo!";
+		cout << "\nTurno del enemigo!";
 		sleep(2);
 		int multiplicador5 = Jugador.ArmaduraEquipada.RESF * modificadorResistencia;
 		int resi = (Jugador.ArmaduraEquipada.RESF + multiplicador5) * 0.5;
@@ -695,7 +979,7 @@ void mostCombate(){
 		}
 		cout << "\n\n";
 		system("pause");
-		jugar();
+		obtenerLoot();
 	}
 	else{
 		if (Jugador.Salud < 1){
@@ -804,13 +1088,21 @@ void mostCombate(){
 		inv();
 	}
 	else if (Opcion == 3){
+		int multiplicador1 = Jugador.ArmaEquipada.DMGF * modificadorAtaque;
+		int multiplicador2 = Jugador.ArmaEquipada.DMGFG * modificadorAtaque;
+		int multiplicador3 = Jugador.ArmaEquipada.DMGV * modificadorAtaque;
+		int multiplicador4 = Jugador.ArmaEquipada.DMGM * modificadorAtaque;
+		int multiplicador5 = Jugador.ArmaduraEquipada.RESF * modificadorResistencia;
+		int multiplicador6 = Jugador.ArmaduraEquipada.RESFG * modificadorResistencia;
+		int multiplicador7 = Jugador.ArmaduraEquipada.RESV * modificadorResistencia;
+		int multiplicador8 = Jugador.ArmaduraEquipada.RESM * modificadorResistencia;
 		cout << "\n--        Estadisticas de " << Enemigo.Nombre << "        --\n";
 		cout << "Experiencia dropeada al ganar el combate: " << Enemigo.XPDrop << " XP";
 		cout << "\nArma equipada: " << Enemigo.ArmaEquipada.Nombre << " (F. " << Enemigo.ArmaEquipada.DMGF << " - FG. " << Enemigo.ArmaEquipada.DMGFG << " - V. " << Enemigo.ArmaEquipada.DMGV << " - M. " << Enemigo.ArmaEquipada.DMGM << ")"; 
 		cout << "\nArmadura equipada: " << Enemigo.ArmaduraEquipada.Nombre << " (F. " << Enemigo.ArmaduraEquipada.RESF << " - FG. " << Enemigo.ArmaduraEquipada.RESFG << " - V. " << Enemigo.ArmaduraEquipada.RESV << " - M. " << Enemigo.ArmaduraEquipada.RESM << ")\n"; 
 		cout << "\n--        Estadisticas de " << Jugador.Nombre << "        --\n";
-		cout << "Arma equipada: " << Jugador.ArmaEquipada.Nombre << " (F. " << Jugador.ArmaEquipada.DMGF << " - FG. " << Jugador.ArmaEquipada.DMGFG << " - V. " << Jugador.ArmaEquipada.DMGV << " - M. " << Jugador.ArmaEquipada.DMGM << ")"; 
-		cout << "\nArmadura equipada: " << Jugador.ArmaduraEquipada.Nombre << " (F. " << Jugador.ArmaduraEquipada.RESF << " - FG. " << Jugador.ArmaduraEquipada.RESFG << " - V. " << Jugador.ArmaduraEquipada.RESV << " - M. " << Jugador.ArmaduraEquipada.RESM << ")\n\n"; 
+		cout << "Arma equipada: " << Jugador.ArmaEquipada.Nombre << " (F. " << Jugador.ArmaEquipada.DMGF + multiplicador1 << " - FG. " << Jugador.ArmaEquipada.DMGFG + multiplicador2 << " - V. " << Jugador.ArmaEquipada.DMGV + multiplicador3 << " - M. " << Jugador.ArmaEquipada.DMGM + multiplicador4 << ")"; 
+		cout << "\nArmadura equipada: " << Jugador.ArmaduraEquipada.Nombre << " (F. " << Jugador.ArmaduraEquipada.RESF + multiplicador5 << " - FG. " << Jugador.ArmaduraEquipada.RESFG + multiplicador6 << " - V. " << Jugador.ArmaduraEquipada.RESV + multiplicador7 << " - M. " << Jugador.ArmaduraEquipada.RESM + multiplicador8 << ")\n\n"; 
 		system("pause");
 		mostCombate();
 	}
@@ -841,7 +1133,7 @@ void mostStats(){
 	int multiplicador8 = Jugador.ArmaduraEquipada.RESM * modificadorResistencia;
 	cout << "\nAtaque: Fisico " << Jugador.ArmaEquipada.DMGF + multiplicador1 << " - Fuego " << Jugador.ArmaEquipada.DMGFG + multiplicador2 << " - Veneno " << Jugador.ArmaEquipada.DMGV + multiplicador3 << " - Magico " << Jugador.ArmaEquipada.DMGM + multiplicador4;
 	cout << "\n\nArmadura equipada: " << Jugador.ArmaduraEquipada.Nombre << " | Nivel " << Jugador.ArmaduraEquipada.Nvl;
-	cout << "\nResistencia: Fisico " << Jugador.ArmaduraEquipada.RESF + multiplicador1 << " - Fuego " << Jugador.ArmaduraEquipada.RESFG + multiplicador2 << " - Veneno " << Jugador.ArmaduraEquipada.RESV + multiplicador3 << " - Magico " << Jugador.ArmaduraEquipada.RESM + multiplicador4;
+	cout << "\nResistencia: Fisico " << Jugador.ArmaduraEquipada.RESF + multiplicador5 << " - Fuego " << Jugador.ArmaduraEquipada.RESFG + multiplicador6 << " - Veneno " << Jugador.ArmaduraEquipada.RESV + multiplicador7 << " - Magico " << Jugador.ArmaduraEquipada.RESM + multiplicador8;
 	cout << "\n" << texto2 << "\n" << "(1)  Volver  (2)  Asignar puntos" << "\n";
 	cin >> Opcion;
 	if (Opcion == 1){
