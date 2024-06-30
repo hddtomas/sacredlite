@@ -86,6 +86,7 @@ bool mentorActivo = false;
 bool turnoEnemigo = false;
 bool jugadorEnvenenado = false;
 bool enemigoEnvenenado = false;
+bool enCombate = false;
 Enemigo Enemigo;
 
 // variables del mercader
@@ -104,6 +105,7 @@ void combate();
 void mostCombate();
 
 void jugar(){
+	enCombate = false;
 	texto2 = "";
 	stats();
 	system("cls");
@@ -273,7 +275,7 @@ void interactuar(){
  	P.Nvl = 1;
  	agregarArmadura(4, P.Nvl, "Armadura del Astolfo", P);
 	if (mercaderActivo == true){
-		if (Jugador.Oro >= mercaderPrecio && Jugador.InvUsado >! 9){
+		if (Jugador.Oro >= mercaderPrecio && Jugador.InvUsado < 10){
 			Jugador.Oro = Jugador.Oro - mercaderPrecio;
 			agregarItem(mercaderId, Jugador.Nivel, mercaderNombre);
 			texto = "Compraste " + mercaderNombre + " por " + std::to_string(mercaderPrecio) + " de oro.";
@@ -334,7 +336,13 @@ void inv(){ // Inventario
 	texto2 = "";
 	cin >> Opcion;
 	if (Opcion == 1){
-		jugar();
+		if (enCombate == false){
+			jugar();
+		}
+		else{
+			turnoEnemigo = true;
+			mostCombate();
+		}
 	}
 	else if(Opcion == 2){
 		cout << "\nQue numero de item deseas usar? ";
@@ -345,11 +353,36 @@ void inv(){ // Inventario
 					texto2 = usarItem(Inventario[Opcion].id, Inventario[Opcion].nivel, Opcion);	
 				}
 				else{
-					texto2 = equiparArmadura(Opcion);
+					if (Inventario[Opcion].DatosB.enUso == true){
+						texto2 = "Desequipaste " + Inventario[Opcion].DatosB.Nombre + ". Haz vuelto a tu armadura inicial.";
+						Inventario[Opcion].DatosB.enUso = false;
+						Jugador.ArmaduraEquipada.Nombre = "Armadura del Novato";
+						Jugador.ArmaduraEquipada.RESF = 5 + (2 * Jugador.Nivel);
+						Jugador.ArmaduraEquipada.RESFG = 0;
+						Jugador.ArmaduraEquipada.RESM = 0;
+						Jugador.ArmaduraEquipada.RESV = 0;
+						Jugador.ArmaduraEquipada.Nvl = Jugador.Nivel;
+					}
+					else{
+						texto2 = equiparArmadura(Opcion);
+					}
 				}
 			}
 			else{
-				texto2 = equiparArma(Opcion);
+				if (Inventario[Opcion].Datos.enUso == true){
+					texto2 = "Desequipaste " + Inventario[Opcion].Datos.Nombre + ". Haz vuelto a tu arma principal.";
+					Inventario[Opcion].Datos.enUso = false;
+					Jugador.ArmaEquipada.Tipo = "Desarmado";
+					Jugador.ArmaEquipada.Nombre = "Desarmado";
+					Jugador.ArmaEquipada.DMGF = 5 + (2 * Jugador.Nivel);
+					Jugador.ArmaEquipada.DMGFG = 0;
+					Jugador.ArmaEquipada.DMGM = 0;
+					Jugador.ArmaEquipada.DMGV = 0;
+					Jugador.ArmaEquipada.Nvl = Jugador.Nivel;
+				}
+				else{
+					texto2 = equiparArma(Opcion);
+				}
 			}
 			inv();
 		}
@@ -375,6 +408,9 @@ void inv(){ // Inventario
 						texto2 = "\nHaz soltado " + Inventario[Opcion].DatosB.Nombre + " y por ende, desequipaste esta armadura.";
 						Jugador.ArmaduraEquipada.Nombre = "Armadura del Novato";
 						Jugador.ArmaduraEquipada.RESF = 5 + (2 * Jugador.Nivel);
+						Jugador.ArmaduraEquipada.RESFG = 0;
+						Jugador.ArmaduraEquipada.RESM = 0;
+						Jugador.ArmaduraEquipada.RESV = 0;
 						Jugador.ArmaduraEquipada.Nvl = Jugador.Nivel;
 					}
 					Inventario[Opcion].DatosB.enUso = false;
@@ -423,6 +459,7 @@ void stats(){ // Chequeo de stats, cada vez que se sube de nivel, las estadistic
     // HACER UN LOOP HASTA Q YA NO QUEDE MAS XP
 	if (Jugador.CantXP >= Jugador.CantXPMaxima){
 	    do{
+	    	texto = texto + "\nSubiste al nivel " + std::to_string(Jugador.Nivel) + "!";
     		Jugador.Nivel++;
 			Jugador.CantXP = Jugador.CantXP - Jugador.CantXPMaxima;
 			if (Jugador.Nivel <= 15){
@@ -440,6 +477,10 @@ void stats(){ // Chequeo de stats, cada vez que se sube de nivel, las estadistic
 			if (Jugador.ArmaEquipada.Tipo == "Desarmado"){
 				Jugador.ArmaEquipada.DMGF = Jugador.ArmaEquipada.DMGF + 2;
 				Jugador.ArmaEquipada.Nvl = Jugador.Nivel;
+			}
+			if (Jugador.ArmaduraEquipada.Nombre == "Armadura del Novato"){
+				Jugador.ArmaduraEquipada.RESF = Jugador.ArmaduraEquipada.RESF + 2;
+				Jugador.ArmaduraEquipada.Nvl = Jugador.Nivel;
 			}
 		}while(Jugador.CantXP > Jugador.CantXPMaxima);
 	}
@@ -491,6 +532,13 @@ void darPaso(){
 void combate(){
 	enemigoEnvenenado = false;
 	jugadorEnvenenado = false;
+	Enemigo.ArmaduraEquipada.RESFG = 0;
+	Enemigo.ArmaduraEquipada.RESM = 0;
+	Enemigo.ArmaduraEquipada.RESV = 0;
+	Enemigo.ArmaEquipada.DMGFG = 0;
+	Enemigo.ArmaEquipada.DMGM = 0;
+	Enemigo.ArmaEquipada.DMGV = 0;
+	enCombate = true;
 	texto2 = "Entraste en un combate. ";
 	if (region == "Region de Ancaria"){
 		int N;
@@ -559,8 +607,10 @@ void mostCombate(){
 	cout << "\n" << texto2;
 	enemigoEnvenenado = false;
 	if (turnoEnemigo == true){
+		cout << "Turno del enemigo!";
 		sleep(2);
-		int resi = Jugador.ArmaduraEquipada.RESF * 0.5;
+		int multiplicador5 = Jugador.ArmaduraEquipada.RESF * modificadorResistencia;
+		int resi = (Jugador.ArmaduraEquipada.RESF + multiplicador5) * 0.5;
 		int atk = Enemigo.ArmaEquipada.DMGF - resi;
 		srand(time(0));
     	int N = ((rand() % 3));
@@ -577,7 +627,8 @@ void mostCombate(){
 		}
 		Jugador.Salud = Jugador.Salud - atk;
 		if (Enemigo.ArmaEquipada.DMGFG > 0){
-			resi = Jugador.ArmaduraEquipada.RESFG * 0.7;
+			int multiplicador6 = Jugador.ArmaduraEquipada.RESFG * modificadorResistencia;
+			resi = (Jugador.ArmaduraEquipada.RESFG + multiplicador6) * 0.7;
 			atk = Enemigo.ArmaEquipada.DMGF - resi;
     		if (atk < 1){
     			atk = 1;
@@ -586,8 +637,9 @@ void mostCombate(){
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque de fuego";
 		}
 		if (Enemigo.ArmaEquipada.DMGV > 0){
-			resi = Jugador.ArmaduraEquipada.RESFG * 0.8;
-			atk = Enemigo.ArmaEquipada.DMGF - resi;
+			int multiplicador7 = Jugador.ArmaduraEquipada.RESV * modificadorResistencia;
+			resi = (Jugador.ArmaduraEquipada.RESV + multiplicador7) * 0.8;
+			atk = Enemigo.ArmaEquipada.DMGV - resi;
 			int atk2 = atk * 0.5;
 			if (atk < 1){
     			atk = 1;
@@ -604,8 +656,9 @@ void mostCombate(){
 			}
 		}
 		if (Enemigo.ArmaEquipada.DMGM > 0){
-			resi = Jugador.ArmaduraEquipada.RESFG * 0.7;
-			atk = Enemigo.ArmaEquipada.DMGF - resi;
+			int multiplicador8 = Jugador.ArmaduraEquipada.RESM * modificadorResistencia;
+			resi = (Jugador.ArmaduraEquipada.RESM + multiplicador8) * 0.7;
+			atk = Enemigo.ArmaEquipada.DMGM - resi;
 			if (atk < 1){
     			atk = 1;
 			}
@@ -635,6 +688,10 @@ void mostCombate(){
 			Jugador.CantXP = Jugador.CantXP + (Enemigo.XPDrop * 2);
 			texto = "Derrotaste a " + Enemigo.Nombre + " de nivel " + std::to_string(Enemigo.Nivel) + ".\nRecibiste " + std::to_string(Enemigo.XPDrop * 2) + " XP (Doble XP por la Pocion del Mentor).";
 			mentorActivo = false;
+		}
+		if (regeneracionFisica > 0){
+			texto = texto + "\nRecuperaste " + std::to_string(regeneracionFisica) + " de vida por la regeneracion fisica.";
+			Jugador.Salud = Jugador.Salud + regeneracionFisica;
 		}
 		cout << "\n\n";
 		system("pause");
@@ -673,8 +730,9 @@ void mostCombate(){
 	}
 	cin >> Opcion;
 	if (Opcion == 1){
+		int multiplicador1 = Jugador.ArmaEquipada.DMGF * modificadorAtaque;
 		int resi = Enemigo.ArmaduraEquipada.RESF * 0.5;
-		int atk = Jugador.ArmaEquipada.DMGF - resi;
+		int atk = (Jugador.ArmaEquipada.DMGF + multiplicador1) - resi;
 	    if (atk < 1){
     		atk = 1;
 		}
@@ -690,8 +748,9 @@ void mostCombate(){
 		}
 		Enemigo.Salud = Enemigo.Salud - atk;
 		if (Jugador.ArmaEquipada.DMGFG > 0){
+			int multiplicador2 = Jugador.ArmaEquipada.DMGFG * modificadorAtaque;
 			resi = Enemigo.ArmaduraEquipada.RESFG * 0.7;
-			atk = Jugador.ArmaEquipada.DMGF - resi;
+			atk = (Jugador.ArmaEquipada.DMGFG + multiplicador2) - resi;
 			if (atk < 1){
     			atk = 1;
 			}
@@ -699,8 +758,9 @@ void mostCombate(){
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque de fuego";
 		}
 		if (Jugador.ArmaEquipada.DMGV > 0){
-			resi = Enemigo.ArmaduraEquipada.RESFG * 0.8;
-			atk = Jugador.ArmaEquipada.DMGF - resi;
+			int multiplicador3 = Jugador.ArmaEquipada.DMGV * modificadorAtaque;
+			resi = Enemigo.ArmaduraEquipada.RESV * 0.8;
+			atk = (Jugador.ArmaEquipada.DMGV + multiplicador3) - resi;
 			int atk2 = atk * 0.5;
 			if (atk < 1){
     			atk = 1;
@@ -716,8 +776,9 @@ void mostCombate(){
 			}
 		}
 		if (Jugador.ArmaEquipada.DMGM > 0){
-			resi = Enemigo.ArmaduraEquipada.RESFG * 0.7;
-			atk = Jugador.ArmaEquipada.DMGF - resi;
+			int multiplicador4 = Jugador.ArmaEquipada.DMGM * modificadorAtaque;
+			resi = Enemigo.ArmaduraEquipada.RESM * 0.7;
+			atk = (Jugador.ArmaEquipada.DMGM + multiplicador4) - resi;
 			if (atk < 1){
     			atk = 1;
 			}
@@ -740,7 +801,7 @@ void mostCombate(){
 		mostCombate();
 	}
 	else if (Opcion == 2){
-		
+		inv();
 	}
 	else if (Opcion == 3){
 		cout << "\n--        Estadisticas de " << Enemigo.Nombre << "        --\n";
@@ -815,8 +876,9 @@ void mostStats(){
 			else if (Opcion == 4){
 				// faltaaa
 				Jugador.puntosDisp--;
-				saludMas = saludMas + 10;
+				saludMas = saludMas + 20;
 				Jugador.Caracteristicas.Vitalidad++;
+				Jugador.SaludMax = Jugador.SaludMax + 20;
 				texto2 = "Gastaste un punto en Vitalidad.";
 				mostStats();
 			}
@@ -877,22 +939,22 @@ int main() {
 	system("cls");
 	// Inicio
 	if (Jugador.Clase == 1){
-		Jugador.SaludMax = 200;
+		Jugador.SaludMax = 300;
 		Jugador.Caracteristicas.Vitalidad = 5;
-		saludMas = 50;
+		saludMas = 100;
 		Jugador.Caracteristicas.Resistencia = 10;
 		modificadorResistencia = 0.10;
 		Jugador.Caracteristicas.Fuerza = 10;
 		modificadorAtaque = 0.10;
 	}
 	else{
-		Jugador.SaludMax = 100;
+		Jugador.SaludMax = 140;
 		Jugador.Caracteristicas.Fuerza = 5;
 		modificadorAtaque = 0.05;
 		Jugador.Caracteristicas.RegFisica = 15;
 		regeneracionFisica = 150;
 		Jugador.Caracteristicas.Vitalidad = 2;
-		saludMas = 20;
+		saludMas = 40;
 	}
 	Jugador.Salud = Jugador.SaludMax;
 	Jugador.ArmaEquipada.Tipo = "Desarmado";
