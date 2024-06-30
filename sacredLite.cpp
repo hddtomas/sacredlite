@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <cstdlib>
 #include <string.h>
 #include <cstring>
@@ -330,7 +330,7 @@ void inv(){ // Inventario
 			}
 		}
 	}
-	cout << "\n" << texto2 << "\n" << "(1)  Volver  (2)  Usar item" << "\n"; 
+	cout << "\n" << texto2 << "\n" << "(1)  Volver  (2)  Usar item  (3)  Soltar item" << "\n"; 
 	texto2 = "";
 	cin >> Opcion;
 	if (Opcion == 1){
@@ -355,6 +355,61 @@ void inv(){ // Inventario
 		}
 		else{
 			texto2 = "\nNo puedes usar un item que no tienes.";
+			inv();
+		}
+	}
+	else if (Opcion == 3){
+		cout << "\nQue numero de item deseas soltar? ";
+		cin >> Opcion;
+		if (Inventario[Opcion].id != 0){
+			if (Inventario[Opcion].Datos.Tipo == "?"){
+				if (Inventario[Opcion].DatosB.Nombre == "?"){
+					texto2 = "\nHaz soltado " + Inventario[Opcion].Nombre + ".";
+					Inventario[Opcion].id = 0;
+					Inventario[Opcion].Nombre = "?";
+					Inventario[Opcion].nivel = 1;
+				}
+				else{
+					texto2 = "\nHaz soltado " + Inventario[Opcion].DatosB.Nombre + ".";
+					if (Inventario[Opcion].DatosB.enUso == true){
+						texto2 = "\nHaz soltado " + Inventario[Opcion].DatosB.Nombre + " y por ende, desequipaste esta armadura.";
+						Jugador.ArmaduraEquipada.Nombre = "Armadura del Novato";
+						Jugador.ArmaduraEquipada.RESF = 5 + (2 * Jugador.Nivel);
+						Jugador.ArmaduraEquipada.Nvl = Jugador.Nivel;
+					}
+					Inventario[Opcion].DatosB.enUso = false;
+					Inventario[Opcion].id = 0;
+					Inventario[Opcion].Nombre = "?";
+					Inventario[Opcion].DatosB.Nombre = "?";
+					Inventario[Opcion].DatosB.RESFG = 0;
+					Inventario[Opcion].DatosB.RESV = 0;
+					Inventario[Opcion].DatosB.RESM = 0;
+				}
+			}
+			else{
+				texto2 = "\nHaz soltado " + Inventario[Opcion].Datos.Nombre + ".";
+				if (Inventario[Opcion].Datos.enUso == true){
+					texto2 = "\nHaz soltado " + Inventario[Opcion].Datos.Nombre + " y por ende, desequipaste esta arma.";
+					Jugador.ArmaEquipada.Tipo = "Desarmado";
+					Jugador.ArmaEquipada.Nombre = "Desarmado";
+					Jugador.ArmaEquipada.DMGF = 5 + (2 * Jugador.Nivel);
+					Jugador.ArmaEquipada.DMGFG = 0;
+					Jugador.ArmaEquipada.DMGM = 0;
+					Jugador.ArmaEquipada.DMGV = 0;
+					Jugador.ArmaEquipada.Nvl = Jugador.Nivel;
+				}
+				Inventario[Opcion].Datos.enUso = false;
+				Inventario[Opcion].id = 0;
+				Inventario[Opcion].Nombre = "?";
+				Inventario[Opcion].Datos.Tipo = "?";
+				Inventario[Opcion].Datos.DMGFG = 0;
+				Inventario[Opcion].Datos.DMGV = 0;
+				Inventario[Opcion].Datos.DMGM = 0;
+			}
+			inv();
+		}
+		else{
+			texto2 = "\nNo puedes soltar un item que no tienes.";
 			inv();
 		}
 	}
@@ -597,7 +652,13 @@ void mostCombate(){
 						Inventario[i].Nombre = "?";
 						Inventario[i].Datos.Nombre = "?";
 						Inventario[i].Datos.Tipo = "?";
+						Inventario[i].Datos.DMGFG = 0;
+						Inventario[i].Datos.DMGV = 0;
+						Inventario[i].Datos.DMGM = 0;
 						Inventario[i].DatosB.Nombre = "?";		
+						Inventario[i].DatosB.RESFG = 0;	
+						Inventario[i].DatosB.RESV = 0;
+						Inventario[i].DatosB.RESM = 0;
 					}
 				}
 			}
@@ -836,10 +897,11 @@ int main() {
 	Jugador.Salud = Jugador.SaludMax;
 	Jugador.ArmaEquipada.Tipo = "Desarmado";
 	Jugador.ArmaEquipada.Nombre = "Desarmado";
-	Jugador.ArmaEquipada.DMGF = 5;
+	Jugador.ArmaEquipada.DMGF = 7;
 	Jugador.ArmaEquipada.Nvl = 1;
 	Jugador.ArmaduraEquipada.Nombre = "Armadura del Novato";
-	Jugador.ArmaduraEquipada.RESF = 5;
+	Jugador.ArmaduraEquipada.RESF = 7;
+	Jugador.ArmaduraEquipada.Nvl = 1;
 	region = "Region de Ancaria";
 	texto = "Te despiertas en un valle, completamente desarmado.\nEl mundo parece haber cambiado..";
 	Inventario[0].id = 1;
