@@ -47,6 +47,7 @@ struct Datos{ // Almacena datos del jugador
 	int Oro = 50;
 	int InvUsado = 1;
 	int puntosDisp = 0;
+	int muertes = 0;
 	Estadisticas Caracteristicas;
 	Armamento ArmaEquipada;
 	Armadura ArmaduraEquipada;
@@ -1149,12 +1150,12 @@ void combate(){
 			Enemigo.SaludMax = Enemigo.Salud;
 			Enemigo.XPDrop = (22 * Enemigo.Nivel) * 0.5; 
 			Enemigo.ArmaEquipada.Nombre = "Hacha desgastada";
-			Enemigo.ArmaEquipada.DMGF = 14 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGF = 12 * Enemigo.Nivel;
 			Enemigo.ArmaEquipada.DMGFG = 4 * Enemigo.Nivel;
 			Enemigo.ArmaEquipada.DMGV = 2 * Enemigo.Nivel;
 			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.Nombre = "Armadura del Esclavista";
-			Enemigo.ArmaduraEquipada.RESF = 12 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESF = 11 * Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.RESFG = 5 * Enemigo.Nivel;
 		}
 		else if (N == 4){
@@ -1340,6 +1341,7 @@ void mostCombate(){
 	}
 	else{
 		if (Jugador.Salud < 1){
+			Jugador.muertes++;
 			cout << "\n\n";
 			system("pause");
 			for (int i=0;i<10;i++){
@@ -1403,8 +1405,8 @@ void mostCombate(){
 			resi = Enemigo.ArmaduraEquipada.RESV * 0.8;
 			atk = (Jugador.ArmaEquipada.DMGV + multiplicador3) - resi;
 			int atk2 = atk * 0.5;
-			if (atk < 1){
-    			atk = 1;
+			if (atk2 < 1){
+    			atk2 = 1;
 			}
 			Enemigo.Salud = Enemigo.Salud - atk2;
     		int N = ((rand() % 10));
@@ -1491,6 +1493,7 @@ void mostStats(){
 	cout << "\nAtaque: Fisico " << Jugador.ArmaEquipada.DMGF + multiplicador1 << " - Fuego " << Jugador.ArmaEquipada.DMGFG + multiplicador2 << " - Veneno " << Jugador.ArmaEquipada.DMGV + multiplicador3 << " - Magico " << Jugador.ArmaEquipada.DMGM + multiplicador4;
 	cout << "\n\nArmadura equipada: " << Jugador.ArmaduraEquipada.Nombre << " | Nivel " << Jugador.ArmaduraEquipada.Nvl;
 	cout << "\nResistencia: Fisico " << Jugador.ArmaduraEquipada.RESF + multiplicador5 << " - Fuego " << Jugador.ArmaduraEquipada.RESFG + multiplicador6 << " - Veneno " << Jugador.ArmaduraEquipada.RESV + multiplicador7 << " - Magico " << Jugador.ArmaduraEquipada.RESM + multiplicador8;
+	cout << "\n\nCantidad de muertes: " << Jugador.muertes << " muertes";
 	cout << "\n" << texto2 << "\n" << "(1)  Volver  (2)  Asignar puntos" << "\n";
 	cin >> Opcion;
 	if (Opcion == 1){
