@@ -148,7 +148,14 @@ string agregarArmadura(int id, int nivel, string nombre, Armadura datos){
 	// Pechera.Nombre = "Armadura del Astolfo";
 	// Pechera.Nvl = 1;
  	// agregarArmadura(4, Pechera.Nvl, "Armadura del Astolfo", Pechera);
-	if (Jugador.InvUsado != 10){
+ 	int cantItems = 0;
+	for (int i=0;i<10;i++){
+		if (Inventario[i].id != 0){
+			cantItems++;
+		}
+	}
+	Jugador.InvUsado = cantItems;
+	if (Jugador.InvUsado < 10){
 		for (int i=0;i<10;i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
@@ -174,7 +181,14 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 	// Daga.Nvl = 1;
 	// Daga.Tipo = "Daga";
  	// agregarArma(3, Daga.Nvl, "Daga del Astolfo", Daga);
-	if (Jugador.InvUsado != 10){
+ 	int cantItems = 0;
+	for (int i=0;i<10;i++){
+		if (Inventario[i].id != 0){
+			cantItems++;
+		}
+	}
+	Jugador.InvUsado = cantItems;
+	if (Jugador.InvUsado < 10){
 		for (int i=0;i<10;i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
@@ -193,7 +207,14 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 }
 
 string agregarItem(int id, int nivel, string nombre){
-	if (Jugador.InvUsado != 10){
+	int cantItems = 0;
+	for (int i=0;i<10;i++){
+		if (Inventario[i].id != 0){
+			cantItems++;
+		}
+	}
+	Jugador.InvUsado = cantItems;
+	if (Jugador.InvUsado < 10){
 		for (int i=0;i<10;i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
@@ -254,7 +275,7 @@ void obtenerLoot(){
 		Item loot;
 		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 		srand(time(0));
-		int N = ((rand() % 30));
+		int N = ((rand() % 38));
 		if (N == 0){
 		   	loot.id = 1;
 		   	loot.nivel = Jugador.Nivel;
@@ -272,7 +293,7 @@ void obtenerLoot(){
 			loot.nivel = Jugador.Nivel;
 			loot.Nombre = "Daga comun";
 			loot.Datos.DMGF = 8 * Jugador.Nivel;
-			loot.Datos.DMGV = 2 * Jugador.Nivel;
+			loot.Datos.DMGV = 3 * Jugador.Nivel;
 			loot.Datos.Nvl = Jugador.Nivel;
 			loot.Datos.Tipo = "Daga";
 			loot.Datos.Nombre = "Daga comun";
@@ -282,7 +303,7 @@ void obtenerLoot(){
 			loot.id = 3;
 			loot.nivel = Jugador.Nivel;
 			loot.Nombre = "Daga del Novato";
-			loot.Datos.DMGF = 9 * Jugador.Nivel;
+			loot.Datos.DMGF = 10 * Jugador.Nivel;
 			loot.Datos.Nvl = Jugador.Nivel;
 			loot.Datos.Tipo = "Daga";
 			loot.Datos.Nombre = "Daga del Novato";
@@ -573,6 +594,98 @@ void obtenerLoot(){
 			loot.Datos.Tipo = "Hacha";
 			loot.Datos.Nombre = "Hacha del Rey";
 			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 30){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada balanceada";
+			loot.Datos.DMGF = 9 * Jugador.Nivel;
+			loot.Datos.DMGM = 7 * Jugador.Nivel;
+			loot.Datos.DMGFG = 5 * Jugador.Nivel;
+			loot.Datos.DMGV = 4 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada balanceada";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 31){
+			loot.id = 4;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Espada de los Antiguos Esqueletos";
+			loot.Datos.DMGF = 11 * Jugador.Nivel;
+			loot.Datos.DMGM = 3 * Jugador.Nivel;
+			loot.Datos.DMGV = 6 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Espada";
+			loot.Datos.Nombre = "Espada de los Antiguos Esqueletos";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 32){
+			loot.id = 3;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Daga balanceada";
+			loot.Datos.DMGF = 8 * Jugador.Nivel;
+			loot.Datos.DMGM = 4 * Jugador.Nivel;
+			loot.Datos.DMGV = 3 * Jugador.Nivel;
+			loot.Datos.DMGFG = 5 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Daga";
+			loot.Datos.Nombre = "Daga balanceada";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 33){
+			loot.id = 3;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Daga infernal";
+			loot.Datos.DMGF = 9 * Jugador.Nivel;
+			loot.Datos.DMGV = 2 * Jugador.Nivel;
+			loot.Datos.DMGFG = 7 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Daga";
+			loot.Datos.Nombre = "Daga infernal";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (N == 34){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura infernal";
+			loot.DatosB.RESF = 14 * Jugador.Nivel;
+			loot.DatosB.RESFG = 17 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura infernal";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 35){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura de la Paz";
+			loot.DatosB.RESF = 11 * Jugador.Nivel;
+			loot.DatosB.RESM = 12 * Jugador.Nivel;
+			loot.DatosB.RESFG = 8 * Jugador.Nivel;
+			loot.DatosB.RESV = 6 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura de la Paz";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 36){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura de la Gracia";
+			loot.DatosB.RESF = 12 * Jugador.Nivel;
+			loot.DatosB.RESM = 11 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura de la Gracia";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 37){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura del Lobo";
+			loot.DatosB.RESF = 17 * Jugador.Nivel;
+			loot.DatosB.RESFG = 9 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura del Lobo";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 		}
 		texto = texto + "\nEl enemigo dropeo " + loot.Nombre + " y ahora esta en tu inventario.";
 	}
@@ -1169,8 +1282,8 @@ void mostCombate(){
 			resi = (Jugador.ArmaduraEquipada.RESV + multiplicador7) * 0.8;
 			atk = Enemigo.ArmaEquipada.DMGV - resi;
 			int atk2 = atk * 0.5;
-			if (atk < 1){
-    			atk = 1;
+			if (atk2 < 1){
+    			atk2 = 1;
 			}	
 			Jugador.Salud = Jugador.Salud - atk2;
 			srand(time(0));
