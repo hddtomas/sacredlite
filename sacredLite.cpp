@@ -223,7 +223,7 @@ string usarItem(int id, int nivel, int Opcion){
 			}
 			stats();
 			Inventario[Opcion].id = 0;
-			return "\nUsaste Pocion de Curacion.\nRegeneraste " + std::to_string(cnt) + " de salud."; 
+			return "\nUsaste Pocion de Curacion.\nRegeneraste " + std::to_string(cnt) + " de salud (" + std::to_string(Jugador.Salud) + "/" + std::to_string(Jugador.SaludMax) + ")."; 
 		}
 		else{
 			return "\nNo puedes usar esto si tu salud esta intacta.";
@@ -546,6 +546,7 @@ void obtenerLoot(){
 			loot.Nombre = "Armadura de la Justicia";
 			loot.DatosB.RESF = 20 * Jugador.Nivel;
 			loot.DatosB.RESFG = 10 * Jugador.Nivel;
+			loot.DatosB.RESV = 5 * Jugador.Nivel;
 			loot.DatosB.Nvl = Jugador.Nivel;
 			loot.DatosB.Nombre = "Armadura de la Justicia";
 			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
@@ -809,6 +810,7 @@ void stats(){ // Chequeo de stats, cada vez que se sube de nivel, las estadistic
 			}
 			//Jugador.CantXPMaxima = Jugador.CantXPMaxima * 1.5; // Cada vez que se sube de nivel, el proceso se vuelve mas "complicado"
 			Jugador.SaludMax = Jugador.SaludMax * 1.05;
+			Jugador.Salud = Jugador.SaludMax;
 			Jugador.puntosDisp = Jugador.puntosDisp + 4;
 			if (Jugador.ArmaEquipada.Tipo == "Desarmado"){
 				Jugador.ArmaEquipada.DMGF = Jugador.ArmaEquipada.DMGF + 2;
@@ -927,7 +929,7 @@ void combate(){
 		else if (N == 1){
 			Enemigo.Nombre = "Goblin";
 			Enemigo.Nivel = Jugador.Nivel;
-			Enemigo.Salud = 35 * Enemigo.Nivel;
+			Enemigo.Salud = 30 * Enemigo.Nivel;
 			Enemigo.SaludMax = Enemigo.Salud;
 			Enemigo.XPDrop = (14 * Enemigo.Nivel) * 0.5;
 			Enemigo.ArmaEquipada.Nombre = "Daga oxidada";
@@ -935,8 +937,8 @@ void combate(){
 			Enemigo.ArmaEquipada.DMGV = 4 * Enemigo.Nivel;
 			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.Nombre = "Sin armadura";
-			Enemigo.ArmaduraEquipada.RESF = 6 * Enemigo.Nivel;
-			Enemigo.ArmaduraEquipada.RESM = 8 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESF = 4 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 6 * Enemigo.Nivel;
 		}
 		else if (N == 2){
 			Enemigo.Nombre = "Chaman Goblin";
@@ -1070,11 +1072,11 @@ void combate(){
 			Enemigo.XPDrop = (24 * Enemigo.Nivel) * 0.5; 
 			Enemigo.ArmaEquipada.Nombre = "Baculo de la magia oscura";
 			Enemigo.ArmaEquipada.DMGF = 3 * Enemigo.Nivel;
-			Enemigo.ArmaEquipada.DMGM = 8 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGM = 7 * Enemigo.Nivel;
 			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.Nombre = "Armadura del Mago experto";
 			Enemigo.ArmaduraEquipada.RESF = 6 * Enemigo.Nivel;
-			Enemigo.ArmaduraEquipada.RESM = 8 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 7 * Enemigo.Nivel;
 		}
 		else if (N == 1){
 			Enemigo.Nombre = "Lider cultista";
@@ -1084,11 +1086,11 @@ void combate(){
 			Enemigo.XPDrop = (30 * Enemigo.Nivel) * 0.5; 
 			Enemigo.ArmaEquipada.Nombre = "Libro del saber";
 			Enemigo.ArmaEquipada.DMGF = 0;
-			Enemigo.ArmaEquipada.DMGM = 14 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGM = 10 * Enemigo.Nivel;
 			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.Nombre = "Armadura magica encantada";
-			Enemigo.ArmaduraEquipada.RESF = 8 * Enemigo.Nivel;
-			Enemigo.ArmaduraEquipada.RESM = 16 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESF = 7 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 13 * Enemigo.Nivel;
 		}
 	}
 	else if (region == "Region del Desierto"){
@@ -1099,9 +1101,9 @@ void combate(){
 		if (N == 0){
 			Enemigo.Nombre = "Esqueleto";
 			Enemigo.Nivel = Jugador.Nivel;
-			Enemigo.Salud = 80 * Enemigo.Nivel;
+			Enemigo.Salud = 70 * Enemigo.Nivel;
 			Enemigo.SaludMax = Enemigo.Salud;
-			Enemigo.XPDrop = (32 * Enemigo.Nivel) * 0.5; 
+			Enemigo.XPDrop = (36 * Enemigo.Nivel) * 0.5; 
 			Enemigo.ArmaEquipada.Nombre = "Espada ligera";
 			Enemigo.ArmaEquipada.DMGF = 6 * Enemigo.Nivel;
 			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
@@ -1112,7 +1114,7 @@ void combate(){
 		else if (N == 1){
 			Enemigo.Nombre = "Mago esqueleto";
 			Enemigo.Nivel = Jugador.Nivel;
-			Enemigo.Salud = 70 * Enemigo.Nivel;
+			Enemigo.Salud = 65 * Enemigo.Nivel;
 			Enemigo.SaludMax = Enemigo.Salud;
 			Enemigo.XPDrop = (30 * Enemigo.Nivel) * 0.5; 
 			Enemigo.ArmaEquipada.Nombre = "Espada desgastada magica";
