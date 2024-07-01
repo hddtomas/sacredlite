@@ -243,11 +243,18 @@ string usarItem(int id, int nivel, int Opcion){
 }
 
 void obtenerLoot(){
+	int cantItems = 0;
+	for (int i=0;i<10;i++){
+		if (Inventario[i].id != 0){
+			cantItems++;
+		}
+	}
+	Jugador.InvUsado = cantItems;
 	if (Jugador.InvUsado < 10){
 		Item loot;
 		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 		srand(time(0));
-		int N = ((rand() % 26));
+		int N = ((rand() % 30));
 		if (N == 0){
 		   	loot.id = 1;
 		   	loot.nivel = Jugador.Nivel;
@@ -521,6 +528,51 @@ void obtenerLoot(){
 			loot.DatosB.Nombre = "Armadura del Rey";
 			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 		}
+		else if (N == 26){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura balanceada";
+			loot.DatosB.RESF = 15 * Jugador.Nivel;
+			loot.DatosB.RESV = 8 * Jugador.Nivel;
+			loot.DatosB.RESFG = 6 * Jugador.Nivel;
+			loot.DatosB.RESM = 11 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura balanceada";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 27){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura de la Justicia";
+			loot.DatosB.RESF = 20 * Jugador.Nivel;
+			loot.DatosB.RESFG = 10 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura de la Justicia";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 28){
+			loot.id = 6;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Armadura de la Magia Oscura";
+			loot.DatosB.RESF = 13 * Jugador.Nivel;
+			loot.DatosB.RESM = 18 * Jugador.Nivel;
+			loot.DatosB.Nvl = Jugador.Nivel;
+			loot.DatosB.Nombre = "Armadura de la Magia Oscura";
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else if (N == 29){
+			loot.id = 5;
+			loot.nivel = Jugador.Nivel;
+			loot.Nombre = "Hacha del Rey";
+			loot.Datos.DMGF = 17 * Jugador.Nivel;
+			loot.Datos.DMGFG = 4 * Jugador.Nivel;
+			loot.Datos.DMGV = 3 * Jugador.Nivel;
+			loot.Datos.DMGM = 5 * Jugador.Nivel;
+			loot.Datos.Nvl = Jugador.Nivel;
+			loot.Datos.Tipo = "Hacha";
+			loot.Datos.Nombre = "Hacha del Rey";
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
 		texto = texto + "\nEl enemigo dropeo " + loot.Nombre + " y ahora esta en tu inventario.";
 	}
 	else{
@@ -743,8 +795,8 @@ void stats(){ // Chequeo de stats, cada vez que se sube de nivel, las estadistic
     // HACER UN LOOP HASTA Q YA NO QUEDE MAS XP
 	if (Jugador.CantXP >= Jugador.CantXPMaxima){
 	    do{
-	    	texto = texto + "\nSubiste al nivel " + std::to_string(Jugador.Nivel) + "!";
     		Jugador.Nivel++;
+    		texto = texto + "\nSubiste al nivel " + std::to_string(Jugador.Nivel) + "!";
 			Jugador.CantXP = Jugador.CantXP - Jugador.CantXPMaxima;
 			if (Jugador.Nivel <= 15){
 				Jugador.CantXPMaxima = Jugador.CantXPMaxima * 1.3;
@@ -776,7 +828,7 @@ void stats(){ // Chequeo de stats, cada vez que se sube de nivel, las estadistic
 void darPaso(){
 	mercaderActivo = false;
     srand(time(0));
-    int N = ((rand() % 4));
+    int N = ((rand() % 5));
     texto = "Diste un paso.";
     if (N == 0){
     	jugar();
@@ -811,6 +863,35 @@ void darPaso(){
 	else if (N == 3){
 		combate();
 	}
+	else if (N == 4){
+		srand(time(0));
+    	N = ((rand() % 4));
+    	if (N == 0){
+    		if (region != "Region de Ancaria"){
+    			texto = "Diste un paso y pasaste a la Region de Ancaria, hay muy buenas vistas.";	
+			}
+    		region = "Region de Ancaria";
+		}
+		else if (N == 1){
+			if (region != "Region de Mascarell"){
+    			texto = "Diste un paso y pasaste a la Region de Mascarell. El ambiente se siente un poco raro...";	
+			}
+    		region = "Region de Mascarell";
+		}
+		else if (N == 2){
+			if (region != "Region de los Pantanos"){
+    			texto = "Diste un paso y pasaste a la Region de los Pantanos. Hay un fuerte olor a magia oscura.";	
+			}
+    		region = "Region de los Pantanos";
+		}
+		else if (N == 3){
+			if (region != "Region del Desierto"){
+    			texto = "Diste un paso y pasaste a la Region del Desierto, el sol pega demasiado fuerte.";	
+			}
+    		region = "Region del Desierto";
+		}
+		jugar();
+	}
 }
 
 void combate(){
@@ -823,63 +904,224 @@ void combate(){
 	Enemigo.ArmaEquipada.DMGM = 0;
 	Enemigo.ArmaEquipada.DMGV = 0;
 	enCombate = true;
+	turnoEnemigo = false;
 	texto2 = "Entraste en un combate. ";
 	if (region == "Region de Ancaria"){
 		int N;
 		seed = seed + 1;
 		srand(seed);
-		N = ((rand() % 4));
+		N = ((rand() % 5));
 		if (N == 0){
 			Enemigo.Nombre = "Mercenario";
 			Enemigo.Nivel = Jugador.Nivel;
-			Enemigo.Salud = 35 * Jugador.Nivel;
+			Enemigo.Salud = 50 * Enemigo.Nivel;
 			Enemigo.SaludMax = Enemigo.Salud;
-			Enemigo.XPDrop = (18 * Jugador.Nivel) * 0.5; // Tal vez despues modifique la formula
+			Enemigo.XPDrop = (20 * Enemigo.Nivel) * 0.5; 
 			Enemigo.ArmaEquipada.Nombre = "Espada del Mercenario";
-			Enemigo.ArmaEquipada.DMGF = 6 * Jugador.Nivel;
-			Enemigo.ArmaEquipada.Nvl = Jugador.Nivel;
+			Enemigo.ArmaEquipada.DMGF = 9 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.Nombre = "Armadura de la Realeza y el Honor";
-			Enemigo.ArmaduraEquipada.RESF = 3 * Jugador.Nivel;
+			Enemigo.ArmaduraEquipada.RESF = 6 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 4 * Enemigo.Nivel;
 		}
 		else if (N == 1){
 			Enemigo.Nombre = "Goblin";
 			Enemigo.Nivel = Jugador.Nivel;
-			Enemigo.Salud = 20 * Jugador.Nivel;
+			Enemigo.Salud = 35 * Enemigo.Nivel;
 			Enemigo.SaludMax = Enemigo.Salud;
-			Enemigo.XPDrop = (10 * Jugador.Nivel) * 0.5;
+			Enemigo.XPDrop = (14 * Enemigo.Nivel) * 0.5;
 			Enemigo.ArmaEquipada.Nombre = "Daga oxidada";
-			Enemigo.ArmaEquipada.DMGF = 2 * Jugador.Nivel;
-			Enemigo.ArmaEquipada.DMGV = 2 * Jugador.Nivel;
-			Enemigo.ArmaEquipada.Nvl = Jugador.Nivel;
+			Enemigo.ArmaEquipada.DMGF = 6 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGV = 4 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.Nombre = "Sin armadura";
-			Enemigo.ArmaduraEquipada.RESF = 2 * Jugador.Nivel;
-			Enemigo.ArmaduraEquipada.RESM = 3 * Jugador.Nivel;
+			Enemigo.ArmaduraEquipada.RESF = 6 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 8 * Enemigo.Nivel;
 		}
 		else if (N == 2){
 			Enemigo.Nombre = "Chaman Goblin";
 			Enemigo.Nivel = Jugador.Nivel;
-			Enemigo.Salud = 25 * Jugador.Nivel;
+			Enemigo.Salud = 45 * Enemigo.Nivel;
 			Enemigo.SaludMax = Enemigo.Salud;
-			Enemigo.XPDrop = (12 * Jugador.Nivel) * 0.5; 
+			Enemigo.XPDrop = (17 * Enemigo.Nivel) * 0.5; 
 			Enemigo.ArmaEquipada.Nombre = "Baculo";
-			Enemigo.ArmaEquipada.DMGF = 2 * Jugador.Nivel;
-			Enemigo.ArmaEquipada.DMGM = 4 * Jugador.Nivel;
-			Enemigo.ArmaEquipada.Nvl = Jugador.Nivel;
+			Enemigo.ArmaEquipada.DMGF = 8 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGM = 10 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.Nombre = "Sin armadura";
-			Enemigo.ArmaduraEquipada.RESF = 3 * Jugador.Nivel;
-			Enemigo.ArmaduraEquipada.RESM = 5 * Jugador.Nivel;
+			Enemigo.ArmaduraEquipada.RESF = 6 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 8 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESV = 5 * Enemigo.Nivel;
 		}
 		else if (N == 3){
 			Enemigo.Nombre = "Lobo";
 			Enemigo.Nivel = Jugador.Nivel;
-			Enemigo.Salud = 20 * Jugador.Nivel;
+			Enemigo.Salud = 30 * Enemigo.Nivel;
 			Enemigo.SaludMax = Enemigo.Salud;
-			Enemigo.XPDrop = (10 * Jugador.Nivel) * 0.5;
+			Enemigo.XPDrop = (8 * Enemigo.Nivel) * 0.5;
 			Enemigo.ArmaEquipada.Nombre = "Garras";
-			Enemigo.ArmaEquipada.DMGF = 2 * Jugador.Nivel;
-			Enemigo.ArmaEquipada.Nvl = Jugador.Nivel;
+			Enemigo.ArmaEquipada.DMGF = 6 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.Nombre = "Sin armadura";
-			Enemigo.ArmaduraEquipada.RESF = 3 * Jugador.Nivel;
+			Enemigo.ArmaduraEquipada.RESF = 5 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 4 * Enemigo.Nivel;
+		}
+		else if (N == 4){
+			Enemigo.Nombre = "Burro";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 20 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (5 * Enemigo.Nivel) * 0.5;
+			Enemigo.ArmaEquipada.Nombre = "Patadas";
+			Enemigo.ArmaEquipada.DMGF = 3 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Sin armadura";
+			Enemigo.ArmaduraEquipada.RESF = 3 * Enemigo.Nivel;
+		}
+	}
+	else if (region == "Region de Mascarell"){
+		int N;
+		seed = seed + 1;
+		srand(seed);
+		N = ((rand() % 5));
+		if (N == 0){
+			Enemigo.Nombre = "Ladron";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 40 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (16 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Daga poco afilada";
+			Enemigo.ArmaEquipada.DMGF = 9 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura desgastada";
+			Enemigo.ArmaduraEquipada.RESF = 4 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 3 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESV = 4 * Enemigo.Nivel;
+		}
+		else if (N == 1){
+			Enemigo.Nombre = "Asesino";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 50 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (20 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Espada";
+			Enemigo.ArmaEquipada.DMGF = 12 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGV = 4 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura desgastada";
+			Enemigo.ArmaduraEquipada.RESF = 7 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 5 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESV = 6 * Enemigo.Nivel;
+		}
+		else if (N == 2){
+			Enemigo.Nombre = "Bandido";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 45 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (18 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Daga muy afilada";
+			Enemigo.ArmaEquipada.DMGF = 13 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura desgastada";
+			Enemigo.ArmaduraEquipada.RESF = 8 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 3 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESV = 4 * Enemigo.Nivel;
+		}
+		else if (N == 3){
+			Enemigo.Nombre = "Cazadora de Esclavos";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 60 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (22 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Hacha desgastada";
+			Enemigo.ArmaEquipada.DMGF = 14 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGFG = 4 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGV = 2 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura del Esclavista";
+			Enemigo.ArmaduraEquipada.RESF = 12 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 5 * Enemigo.Nivel;
+		}
+		else if (N == 4){
+			Enemigo.Nombre = "Cultista";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 55 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (21 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Espada magica";
+			Enemigo.ArmaEquipada.DMGF = 7 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGM = 8 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura magica";
+			Enemigo.ArmaduraEquipada.RESF = 3 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 8 * Enemigo.Nivel;
+		}
+	}
+	else if (region == "Region de los Pantanos"){
+		int N;
+		seed = seed + 1;
+		srand(seed);
+		N = ((rand() % 2));
+		if (N == 0){
+			Enemigo.Nombre = "Mago oscuro";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 60 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (24 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Baculo de la magia oscura";
+			Enemigo.ArmaEquipada.DMGF = 3 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGM = 8 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura del Mago experto";
+			Enemigo.ArmaduraEquipada.RESF = 6 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 8 * Enemigo.Nivel;
+		}
+		else if (N == 1){
+			Enemigo.Nombre = "Lider cultista";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 70 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (30 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Libro del saber";
+			Enemigo.ArmaEquipada.DMGF = 0;
+			Enemigo.ArmaEquipada.DMGM = 14 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura magica encantada";
+			Enemigo.ArmaduraEquipada.RESF = 8 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 16 * Enemigo.Nivel;
+		}
+	}
+	else if (region == "Region del Desierto"){
+		int N;
+		seed = seed + 1;
+		srand(seed);
+		N = ((rand() % 2));
+		if (N == 0){
+			Enemigo.Nombre = "Esqueleto";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 80 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (32 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Espada ligera";
+			Enemigo.ArmaEquipada.DMGF = 6 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Sin armadura";
+			Enemigo.ArmaduraEquipada.RESF = 4 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESV = 13 * Enemigo.Nivel;
+		}
+		else if (N == 1){
+			Enemigo.Nombre = "Mago esqueleto";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 70 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (30 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Espada desgastada magica";
+			Enemigo.ArmaEquipada.DMGF = 4 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGM = 8 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Sin armadura";
+			Enemigo.ArmaduraEquipada.RESF = 2 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESV = 10 * Enemigo.Nivel;
 		}
 	}
 	mostCombate();
@@ -1194,7 +1436,7 @@ int main() {
 	int txt;
 	bool seleccionado;
 	cout << "Bienvenido a Sacred Lite!\n\n";
-	cout << "Clases disponibles:\nGladiador (1) - Guerrero con la habilidad y entrenamiento necesarios para usar gran parte de las armas. Es un maestro de la hacha y de las armas pesadas, ademas de ser muy fuerte y resistente.\nEnano (2) - \n";
+	cout << "Clases disponibles:\nGladiador (1) - Guerrero con la habilidad y entrenamiento necesarios para usar gran parte de las armas. Es un maestro de la hacha y de las armas pesadas, ademas de ser muy fuerte y resistente.\nEnano (2) - Tiene poca resistencia y fuerza, pero se cura mucho luego de una batalla. Aun asi, debe estar equipado correctamente.\n";
 	do{
 		cout << "\nDefina su clase poniendo el numero correspondiente: ";
 		cin >> txt;
@@ -1215,18 +1457,9 @@ int main() {
 		else{
 			cout << "Clase seleccionada: Enano\n";
 		}
-		cout << "\nDificultades disponibles: Bronce (1) y Plata (2)";
-		cout << "\n\nElija su dificultad poniendo el numero correspondiente: ";
-		cin >> txt;
-		if (txt == 1 || txt == 2){
-			Dificultad = txt;
-			cout << "\nEscriba el nombre del personaje: ";
-			cin >> Jugador.Nombre;
-			seleccionado = true;
-		}
-		else{
-			cout << "\nLa dificultad es invalida, intente otra vez.";
-		}
+		cout << "\nEscriba el nombre del personaje: ";
+		std::getline(std::cin >> std::ws, Jugador.Nombre);
+		seleccionado = true;
 	}while(seleccionado != true);
 	system("cls");
 	// Inicio
@@ -1234,19 +1467,21 @@ int main() {
 		Jugador.SaludMax = 300;
 		Jugador.Caracteristicas.Vitalidad = 5;
 		saludMas = 100;
-		Jugador.Caracteristicas.Resistencia = 10;
-		modificadorResistencia = 0.10;
+		Jugador.Caracteristicas.Resistencia = 20;
+		modificadorResistencia = 0.20;
 		Jugador.Caracteristicas.Fuerza = 10;
 		modificadorAtaque = 0.10;
+		Jugador.Caracteristicas.RegFisica = 2;
+		regeneracionFisica = 20;
 	}
 	else{
-		Jugador.SaludMax = 140;
+		Jugador.SaludMax = 160;
 		Jugador.Caracteristicas.Fuerza = 5;
 		modificadorAtaque = 0.05;
 		Jugador.Caracteristicas.RegFisica = 15;
 		regeneracionFisica = 150;
-		Jugador.Caracteristicas.Vitalidad = 2;
-		saludMas = 40;
+		Jugador.Caracteristicas.Vitalidad = 3;
+		saludMas = 60;
 	}
 	Jugador.Salud = Jugador.SaludMax;
 	Jugador.ArmaEquipada.Tipo = "Desarmado";
