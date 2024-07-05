@@ -12,10 +12,10 @@ struct Armamento{ // Almacena datos del arma equipada
 	string Tipo = "?"; // hacha, espada, arco, daga, desarmado
 	string Nombre;
 	int Nvl = 1;
-	int DMGF = 0; // daÃ±o fisico
-	int DMGV = 0; // daÃ±o veneno
-	int DMGM = 0; // daÃ±o magico
-	int DMGFG = 0; // daÃ±o fuego
+	int DMGF = 0; // daÃƒÂ±o fisico
+	int DMGV = 0; // daÃƒÂ±o veneno
+	int DMGM = 0; // daÃƒÂ±o magico
+	int DMGFG = 0; // daÃƒÂ±o fuego
 	bool enUso = false;
 };
 
@@ -1211,7 +1211,7 @@ void combate(){
 		int N;
 		seed = seed + 1;
 		srand(seed);
-		N = ((rand() % 2));
+		N = ((rand() % 5));
 		if (N == 0){
 			Enemigo.Nombre = "Esqueleto";
 			Enemigo.Nivel = Jugador.Nivel;
@@ -1239,6 +1239,47 @@ void combate(){
 			Enemigo.ArmaduraEquipada.RESF = 2 * Enemigo.Nivel;
 			Enemigo.ArmaduraEquipada.RESV = 10 * Enemigo.Nivel;
 		}
+		else if (N == 2){
+			Enemigo.Nombre = "Orco";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 60 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (25 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Hacha de los Orcos";
+			Enemigo.ArmaEquipada.DMGF = 9 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura comun";
+			Enemigo.ArmaduraEquipada.RESF = 7 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 7 * Enemigo.Nivel;
+		}
+		else if (N == 3){
+			Enemigo.Nombre = "Chaman Orco";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 65 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (27 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Hacha magica";
+			Enemigo.ArmaEquipada.DMGF = 7 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.DMGM = 8 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura comun";
+			Enemigo.ArmaduraEquipada.RESF = 6 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 8 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESM = 2 * Enemigo.Nivel;
+		}
+		else if (N == 4){
+			Enemigo.Nombre = "Lider Orco";
+			Enemigo.Nivel = Jugador.Nivel;
+			Enemigo.Salud = 70 * Enemigo.Nivel;
+			Enemigo.SaludMax = Enemigo.Salud;
+			Enemigo.XPDrop = (30 * Enemigo.Nivel) * 0.5; 
+			Enemigo.ArmaEquipada.Nombre = "Hacha del Lider";
+			Enemigo.ArmaEquipada.DMGF = 9 * Enemigo.Nivel;
+			Enemigo.ArmaEquipada.Nvl = Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.Nombre = "Armadura del Lider";
+			Enemigo.ArmaduraEquipada.RESF = 10 * Enemigo.Nivel;
+			Enemigo.ArmaduraEquipada.RESFG = 11 * Enemigo.Nivel;
+		}
 	}
 	mostCombate();
 }
@@ -1249,11 +1290,12 @@ void mostCombate(){
 	cout << "\n" << texto2;
 	enemigoEnvenenado = false;
 	if (turnoEnemigo == true){
-		cout << "\nTurno del enemigo!";
-		sleep(2);
+		cout << "\nTurno del enemigo!\n";
+		system("pause");
 		int multiplicador5 = Jugador.ArmaduraEquipada.RESF * modificadorResistencia;
 		int resi = (Jugador.ArmaduraEquipada.RESF + multiplicador5) * 0.5;
 		int atk = Enemigo.ArmaEquipada.DMGF - resi;
+		int suma = 0;
 		srand(time(0));
     	int N = ((rand() % 3));
     	if (atk < 1){
@@ -1267,6 +1309,7 @@ void mostCombate(){
 			}
     		texto2 = "CRITICO! Sufriste " + std::to_string(atk) + " de ataque fisico";
 		}
+		suma = suma + atk;
 		Jugador.Salud = Jugador.Salud - atk;
 		if (Enemigo.ArmaEquipada.DMGFG > 0){
 			int multiplicador6 = Jugador.ArmaduraEquipada.RESFG * modificadorResistencia;
@@ -1278,6 +1321,7 @@ void mostCombate(){
 			Jugador.Salud = Jugador.Salud - atk;
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque de fuego";
 		}
+		suma = suma + atk;
 		if (Enemigo.ArmaEquipada.DMGV > 0){
 			int multiplicador7 = Jugador.ArmaduraEquipada.RESV * modificadorResistencia;
 			resi = (Jugador.ArmaduraEquipada.RESV + multiplicador7) * 0.8;
@@ -1289,13 +1333,14 @@ void mostCombate(){
 			Jugador.Salud = Jugador.Salud - atk2;
 			srand(time(0));
     		int N = ((rand() % 10));
-    		if (N == 5){
+    		if (N == 5 && atk2 != 1){
     			texto2 = texto2 + " + " + std::to_string(atk2) + " de ataque de veneno (Fuiste envenenado)";
     			jugadorEnvenenado = true;
 			}
 			else{
 				texto2 = texto2 + " + " + std::to_string(atk2) + " de ataque de veneno";
 			}
+			suma = suma + atk2;
 		}
 		if (Enemigo.ArmaEquipada.DMGM > 0){
 			int multiplicador8 = Jugador.ArmaduraEquipada.RESM * modificadorResistencia;
@@ -1307,6 +1352,8 @@ void mostCombate(){
 			Jugador.Salud = Jugador.Salud - atk;
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque magico";
 		}
+		suma = suma + atk;
+		texto2 = texto2 + "\nHaz perdido un total de " + std::to_string(suma) + " de vida!";
 		if (Jugador.Salud < 1){
 			Jugador.Salud = 0;
 			texto2 = texto2 + ".\nFuiste derrotado! Haz perdido todo tu inventario (excepto tu arma principal y armadura) y tu oro.";
@@ -1376,6 +1423,7 @@ void mostCombate(){
 		int multiplicador1 = Jugador.ArmaEquipada.DMGF * modificadorAtaque;
 		int resi = Enemigo.ArmaduraEquipada.RESF * 0.5;
 		int atk = (Jugador.ArmaEquipada.DMGF + multiplicador1) - resi;
+		int suma = 0;
 	    if (atk < 1){
     		atk = 1;
 		}
@@ -1389,6 +1437,7 @@ void mostCombate(){
 			}
 			texto2 = "CRITICO! Hiciste " + std::to_string(atk) + " de ataque fisico";
 		}
+		suma = suma + atk;
 		Enemigo.Salud = Enemigo.Salud - atk;
 		if (Jugador.ArmaEquipada.DMGFG > 0){
 			int multiplicador2 = Jugador.ArmaEquipada.DMGFG * modificadorAtaque;
@@ -1400,6 +1449,7 @@ void mostCombate(){
 			Enemigo.Salud = Enemigo.Salud - atk;
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque de fuego";
 		}
+		suma = suma + atk;
 		if (Jugador.ArmaEquipada.DMGV > 0){
 			int multiplicador3 = Jugador.ArmaEquipada.DMGV * modificadorAtaque;
 			resi = Enemigo.ArmaduraEquipada.RESV * 0.8;
@@ -1410,13 +1460,14 @@ void mostCombate(){
 			}
 			Enemigo.Salud = Enemigo.Salud - atk2;
     		int N = ((rand() % 10));
-    		if (N == 5){
+    		if (N == 5 && atk2 != 1){
     			texto2 = texto2 + " + " + std::to_string(atk2) + " de ataque de veneno (Enemigo envenenado!)";
     			enemigoEnvenenado = true;
 			}
 			else{
 				texto2 = texto2 + " + " + std::to_string(atk2) + " de ataque de veneno";
 			}
+			suma = suma + atk2;
 		}
 		if (Jugador.ArmaEquipada.DMGM > 0){
 			int multiplicador4 = Jugador.ArmaEquipada.DMGM * modificadorAtaque;
@@ -1428,6 +1479,8 @@ void mostCombate(){
 			Enemigo.Salud = Enemigo.Salud - atk;
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque magico";
 		}
+		texto2 = texto2 + "\nEl enemigo ha perdido un total de " + std::to_string(suma) + " de vida!";
+		suma = suma + atk;
 		if (Enemigo.Salud < 1){
 			Enemigo.Salud = 0;
 			texto2 = texto2 + ".\nEl enemigo fue derrotado!";
@@ -1587,8 +1640,8 @@ int main() {
 		saludMas = 100;
 		Jugador.Caracteristicas.Resistencia = 20;
 		modificadorResistencia = 0.20;
-		Jugador.Caracteristicas.Fuerza = 10;
-		modificadorAtaque = 0.10;
+		Jugador.Caracteristicas.Fuerza = 15;
+		modificadorAtaque = 0.15;
 		Jugador.Caracteristicas.RegFisica = 2;
 		regeneracionFisica = 20;
 	}
