@@ -1320,8 +1320,8 @@ void mostCombate(){
 			}
 			Jugador.Salud = Jugador.Salud - atk;
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque de fuego";
+			suma = suma + atk;
 		}
-		suma = suma + atk;
 		if (Enemigo.ArmaEquipada.DMGV > 0){
 			int multiplicador7 = Jugador.ArmaduraEquipada.RESV * modificadorResistencia;
 			resi = (Jugador.ArmaduraEquipada.RESV + multiplicador7) * 0.8;
@@ -1351,8 +1351,8 @@ void mostCombate(){
 			}
 			Jugador.Salud = Jugador.Salud - atk;
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque magico";
+			suma = suma + atk;
 		}
-		suma = suma + atk;
 		texto2 = texto2 + "\nHaz perdido un total de " + std::to_string(suma) + " de vida!";
 		if (Jugador.Salud < 1){
 			Jugador.Salud = 0;
@@ -1448,8 +1448,8 @@ void mostCombate(){
 			}
 			Enemigo.Salud = Enemigo.Salud - atk;
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque de fuego";
+			suma = suma + atk;
 		}
-		suma = suma + atk;
 		if (Jugador.ArmaEquipada.DMGV > 0){
 			int multiplicador3 = Jugador.ArmaEquipada.DMGV * modificadorAtaque;
 			resi = Enemigo.ArmaduraEquipada.RESV * 0.8;
@@ -1478,9 +1478,9 @@ void mostCombate(){
 			}
 			Enemigo.Salud = Enemigo.Salud - atk;
 			texto2 = texto2 + " + " + std::to_string(atk) + " de ataque magico";
+			suma = suma + atk;
 		}
 		texto2 = texto2 + "\nEl enemigo ha perdido un total de " + std::to_string(suma) + " de vida!";
-		suma = suma + atk;
 		if (Enemigo.Salud < 1){
 			Enemigo.Salud = 0;
 			texto2 = texto2 + ".\nEl enemigo fue derrotado!";
