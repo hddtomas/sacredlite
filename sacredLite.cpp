@@ -72,7 +72,7 @@ struct Enemigo{
 };
 
 Datos Jugador;
-Item Inventario[10];
+Item Inventario[20];
 int Dificultad;
 int Opcion;
 int regeneracionFisica = 0;
@@ -84,10 +84,12 @@ string texto;
 string texto2;
 string region;
 bool mentorActivo = false;
+bool turnoActivo = false;
 bool turnoEnemigo = false;
 bool jugadorEnvenenado = false;
 bool enemigoEnvenenado = false;
 bool enCombate = false;
+bool cofreActivo = false;
 
 Enemigo Enemigo;
 
@@ -150,14 +152,14 @@ string agregarArmadura(int id, int nivel, string nombre, Armadura datos){
 	// Pechera.Nvl = 1;
  	// agregarArmadura(4, Pechera.Nvl, "Armadura del Astolfo", Pechera);
  	int cantItems = 0;
-	for (int i=0;i<10;i++){
+	for (int i=0;i<20;i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
-	if (Jugador.InvUsado < 10){
-		for (int i=0;i<10;i++){
+	if (Jugador.InvUsado < 20){
+		for (int i=0;i<20;i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
 				Inventario[i].nivel = nivel;
@@ -183,14 +185,14 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 	// Daga.Tipo = "Daga";
  	// agregarArma(3, Daga.Nvl, "Daga del Astolfo", Daga);
  	int cantItems = 0;
-	for (int i=0;i<10;i++){
+	for (int i=0;i<20;i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
-	if (Jugador.InvUsado < 10){
-		for (int i=0;i<10;i++){
+	if (Jugador.InvUsado < 20){
+		for (int i=0;i<20;i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
 				Inventario[i].nivel = nivel;
@@ -209,14 +211,14 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 
 string agregarItem(int id, int nivel, string nombre){
 	int cantItems = 0;
-	for (int i=0;i<10;i++){
+	for (int i=0;i<20;i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
-	if (Jugador.InvUsado < 10){
-		for (int i=0;i<10;i++){
+	if (Jugador.InvUsado < 20){
+		for (int i=0;i<20;i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
 				Inventario[i].nivel = nivel;
@@ -261,22 +263,37 @@ string usarItem(int id, int nivel, int Opcion){
 			return "\nNo puedes usar esto si ya tienes una pocion del mentor activa.";
 		}
 	}
+	else if (id == 7){ // Pocion del turno
+		if (turnoActivo == false){
+			if (enCombate == true){
+				turnoActivo = true;
+				Inventario[Opcion].id = 0;
+				return "\nUsaste Pocion del Turno.\nTendras doble turno en tu proximo combate."; 
+			}
+			else{
+				return "\nNo puedes usar esto si no estas en combate.";
+			}
+		}
+		else{
+			return "\nNo puedes usar esto si ya tienes una pocion del turno activa.";
+		}
+	}
 	return "Invalido.";
 }
 
 void obtenerLoot(){
 	int cantItems = 0;
-	for (int i=0;i<10;i++){
+	for (int i=0;i<20;i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
-	if (Jugador.InvUsado < 10){
+	if (Jugador.InvUsado < 20){
 		Item loot;
 		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 		srand(time(0));
-		int N = ((rand() % 38));
+		int N = ((rand() % 39));
 		if (N == 0){
 		   	loot.id = 1;
 		   	loot.nivel = Jugador.Nivel;
@@ -688,10 +705,16 @@ void obtenerLoot(){
 			loot.DatosB.Nombre = "Armadura del Lobo";
 			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 		}
-		texto = texto + "\nEl enemigo dropeo " + loot.Nombre + " y ahora esta en tu inventario.";
+		else if (N == 38){
+			loot.id = 7;
+		   	loot.nivel = Jugador.Nivel;
+		   	loot.Nombre = "Pocion del Turno";
+		   	agregarItem(loot.id, loot.nivel, loot.Nombre);
+		}
+		texto = texto + "\nObtuviste " + loot.Nombre + " y ahora esta en tu inventario.";
 	}
 	else{
-		texto = "\nEl enemigo dropeo un item pero tu inventario esta lleno.";
+		texto = "\nNo pudiste agarrar el item porque tu inventario esta lleno.";
 	}
 	jugar();
 }
@@ -720,7 +743,7 @@ string equiparArmadura(int Opcion){
 
 void interactuar(){
 	if (mercaderActivo == true){
-		if (Jugador.Oro >= mercaderPrecio && Jugador.InvUsado < 10){
+		if (Jugador.Oro >= mercaderPrecio && Jugador.InvUsado < 20){
 			Jugador.Oro = Jugador.Oro - mercaderPrecio;
 			agregarItem(mercaderId, Jugador.Nivel, mercaderNombre);
 			texto = "Compraste " + mercaderNombre + " por " + std::to_string(mercaderPrecio) + " de oro.";
@@ -737,7 +760,14 @@ void interactuar(){
 		}
 	}
 	else{
-		texto = "En este momento no hay nada con lo que interactuar.";
+		if (cofreActivo == true){
+			cofreActivo = false;
+			texto = "Abriste el cofre.";
+			obtenerLoot();
+		}
+		else{
+			texto = "En este momento no hay nada con lo que interactuar.";
+		}
 	}
 	jugar();
 }
@@ -745,14 +775,14 @@ void interactuar(){
 void inv(){ // Inventario
 	system("cls");
 	int cantItems = 0;
-	for (int i=0;i<10;i++){
+	for (int i=0;i<20;i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
-	cout << "--        Inventario de " << Jugador.Nombre << " (" << Jugador.InvUsado << "/10)        --\n";
-	for (int i=0;i<10;i++){
+	cout << "--        Inventario de " << Jugador.Nombre << " (" << Jugador.InvUsado << "/20)        --\n";
+	for (int i=0;i<20;i++){
 		if (Inventario[i].id != 0){
 			if (Inventario[i].Datos.Tipo != "?"){
 				if (Inventario[i].Datos.enUso == false){
@@ -785,7 +815,12 @@ void inv(){ // Inventario
 			jugar();
 		}
 		else{
-			turnoEnemigo = true;
+			if (turnoActivo == false){
+				turnoEnemigo = true;
+			}
+			else{
+				turnoEnemigo = false;
+			}
 			mostCombate();
 		}
 	}
@@ -809,7 +844,7 @@ void inv(){ // Inventario
 						Jugador.ArmaduraEquipada.Nvl = Jugador.Nivel;
 					}
 					else{
-						for (int i=0;i<10;i++){
+						for (int i=0;i<20;i++){
 							Inventario[i].DatosB.enUso = false;
 						}
 						texto2 = equiparArmadura(Opcion);
@@ -829,7 +864,7 @@ void inv(){ // Inventario
 					Jugador.ArmaEquipada.Nvl = Jugador.Nivel;
 				}
 				else{
-					for (int i=0;i<10;i++){
+					for (int i=0;i<20;i++){
 						Inventario[i].Datos.enUso = false;
 					}
 					texto2 = equiparArma(Opcion);
@@ -914,16 +949,16 @@ void stats(){ // Chequeo de stats, cada vez que se sube de nivel, las estadistic
     		texto = texto + "\nSubiste al nivel " + std::to_string(Jugador.Nivel) + "!";
 			Jugador.CantXP = Jugador.CantXP - Jugador.CantXPMaxima;
 			if (Jugador.Nivel <= 15){
-				Jugador.CantXPMaxima = Jugador.CantXPMaxima * 1.3;
+				Jugador.CantXPMaxima = Jugador.CantXPMaxima * 1.4;
 			}
 			else if (Jugador.Nivel <= 30){
-				Jugador.CantXPMaxima = Jugador.CantXPMaxima * 1.1;
+				Jugador.CantXPMaxima = Jugador.CantXPMaxima * 1.2;
 			}
 			else{
 				Jugador.CantXPMaxima = Jugador.CantXPMaxima * 1.05;
 			}
 			//Jugador.CantXPMaxima = Jugador.CantXPMaxima * 1.5; // Cada vez que se sube de nivel, el proceso se vuelve mas "complicado"
-			Jugador.SaludMax = Jugador.SaludMax * 1.05;
+			Jugador.SaludMax = Jugador.SaludMax * 1.1;
 			Jugador.Salud = Jugador.SaludMax;
 			Jugador.puntosDisp = Jugador.puntosDisp + 4;
 			if (Jugador.ArmaEquipada.Tipo == "Desarmado"){
@@ -942,16 +977,17 @@ void stats(){ // Chequeo de stats, cada vez que se sube de nivel, las estadistic
 }
 
 void darPaso(){
+	cofreActivo = false;
 	mercaderActivo = false;
     srand(time(0));
-    int N = ((rand() % 5));
+    int N = ((rand() % 6));
     texto = "Diste un paso.";
     if (N == 0){
     	jugar();
 	}
     else if (N == 1){ 
     	mercaderActivo = true;
-    	N = ((rand() % 2)); // El mercader puede ofrecer 3 items distintos.
+    	N = ((rand() % 3)); // El mercader puede ofrecer 3 items distintos.
     	if (N == 0){
     		mercaderId = 1;
     		mercaderPrecio = (80 * Jugador.Nivel) + (15 * Jugador.Nivel); 
@@ -964,11 +1000,17 @@ void darPaso(){
     		mercaderNombre = "Pocion del Mentor";
     		texto = "Te encontraste con un mercader.\nTe ofrece una pocion del mentor (Nivel " + std::to_string(Jugador.Nivel) + ") por " + std::to_string(mercaderPrecio) + " de oro.\nInteractua para comprar, da un paso para rechazar.";
 		}
+		else if (N == 2){
+			mercaderId = 7;
+    		mercaderPrecio = (120 * Jugador.Nivel) + (25 * Jugador.Nivel); 
+    		mercaderNombre = "Pocion del Turno";
+    		texto = "Te encontraste con un mercader.\nTe ofrece una pocion del turno (Nivel " + std::to_string(Jugador.Nivel) + ") por " + std::to_string(mercaderPrecio) + " de oro.\nInteractua para comprar, da un paso para rechazar.";
+		}
 		jugar();
 	}
 	else if(N == 2){ // Dar oro.
 		srand(time(0));
-    	N = ((rand() % 250));
+    	N = ((rand() % 250) + 25);
     	srand(time(0));
     	int N2 = ((rand() % (4 * Jugador.Nivel)));
     	texto = "Diste un paso y encontraste oro en el suelo.\nObtuviste " + std::to_string(N) + " de oro y " + std::to_string(N2) + " de XP.";
@@ -1006,6 +1048,11 @@ void darPaso(){
 			}
     		region = "Region del Desierto";
 		}
+		jugar();
+	}
+	else if (N == 5){
+		cofreActivo = true;
+		texto = "Te haz encontrado con un cofre. Interactua para abrirlo.";
 		jugar();
 	}
 }
@@ -1490,8 +1537,14 @@ void mostCombate(){
 				texto2 = texto2 + ".\nComo envenenaste al enemigo, el enemigo ha perdido un turno.";
 			}
 			else{
-				turnoEnemigo = true;
-				texto2 = texto2 + ".\nAhora es turno del enemigo.";
+				if (turnoActivo == false){
+					turnoEnemigo = true;
+					texto2 = texto2 + ".\nAhora es turno del enemigo.";
+				}
+				else{
+					turnoActivo = false;
+					texto2 = texto2 + ".\nComo tienes una Pocion del Turno activa, el enemigo ha perdido un turno.";
+				}
 			}
 		}
 		mostCombate();
@@ -1526,12 +1579,14 @@ void mostCombate(){
 
 void mostStats(){
 	system("cls");
-	cout << "--        Caracteristicas de " << Jugador.Nombre << "        --\n";
+	cout << "--        Caracteristicas de " << Jugador.Nombre << " (Nivel "  << Jugador.Nivel << ")         --\n";
 	cout << "\nPuntos disponibles: " << Jugador.puntosDisp;
 	cout << "\n1 - Fuerza - " << Jugador.Caracteristicas.Fuerza << " (Bonus " << setprecision(2) << modificadorAtaque << "x de ataque)";
 	cout << "\n2 - Resistencia - " << Jugador.Caracteristicas.Resistencia << " (Bonus " << setprecision(2) << modificadorResistencia << "x de resistencia)";
-	cout << "\n3 - Regeneracion Fisica - " << Jugador.Caracteristicas.RegFisica << " (+" << regeneracionFisica << " de salud recuperada luego de una batalla)";
+	cout << "\n3 - Regeneracion Fisica - " << Jugador.Caracteristicas.RegFisica << " (+" << regeneracionFisica << " de salud regenerada luego de un combate)";
 	cout << "\n4 - Vitalidad - " << Jugador.Caracteristicas.Vitalidad << " (+" << saludMas << " de salud maxima)";
+	cout << "\n\nSalud: " << Jugador.Salud << " / " << Jugador.SaludMax;
+	cout << "\nXP: " << Jugador.CantXP << " / " << Jugador.CantXPMaxima;
 	cout << "\n\nArma equipada: " << Jugador.ArmaEquipada.Nombre << " | Nivel " << Jugador.ArmaEquipada.Nvl;
 	// LA SOLUCION
 	// no sera la mejor pero bue, es mejor q nada
