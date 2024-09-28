@@ -12,10 +12,10 @@ struct Armamento{ // Almacena datos del arma equipada
 	string Tipo = "?"; // hacha, espada, arco, daga, desarmado
 	string Nombre;
 	int Nvl = 1;
-	int DMGF = 0; // daÃƒÂ±o fisico
-	int DMGV = 0; // daÃƒÂ±o veneno
-	int DMGM = 0; // daÃƒÂ±o magico
-	int DMGFG = 0; // daÃƒÂ±o fuego
+	int DMGF = 0; // daño fisico
+	int DMGV = 0; // daño veneno
+	int DMGM = 0; // daño magico
+	int DMGFG = 0; // daño fuego
 	bool enUso = false;
 };
 
