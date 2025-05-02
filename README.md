@@ -1,4 +1,18 @@
-Proyecto escolar de programación hecho en C++, mi idea fue recrear un juego estilo Diablo combinado con Sacred en texto.
-(Entregado el 01/07/2024)
+# Sacred Lite
 
-Las versiones después de la 1.0 son actualizaciones que hice por cuenta propia.  
+## Descripción
+Videojuego diablo-like fuertemente inspirado en Sacred hecho en C++.
+Es un videojuego tipo terminal, por lo que no contiene gráficos más que texto.
+
+## Mecánicas
+- Creación de personaje (Nombre y clase)
+- Estadísticas del personaje
+- Sistema de experiencia
+- Inventario limitado
+- Items variados (Pociones, espadas, hachas y armadura)
+- Sistema de combate por turno básico
+- Sistema de drops de items aleatorios
+
+## Contenidos usados:
+- C++
+
