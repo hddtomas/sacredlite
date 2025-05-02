@@ -8,6 +8,8 @@
 #include <windows.h>
 using namespace std;
 
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+
 struct Armamento{ // Almacena datos del arma equipada
 	string Tipo = "?"; // hacha, espada, arco, daga, desarmado
 	string Nombre;
@@ -110,22 +112,62 @@ void mostCombate();
 void obtenerLoot();
 
 void jugar(){
+	SetConsoleTextAttribute(hConsole, 15);
 	enCombate = false;
 	texto2 = "";
 	stats();
 	system("cls");
 	cout << "--        " << region << "        --\n";
-	cout << "\n" << texto << "\n\n" << "(1)  Dar un paso  (2)  Inventario  (3)  Interactuar  (4)  Caracteristicas" << "\n"; 
+	cout << "\n" << texto << "\n\n";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(1) ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << " Dar un paso  ";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(2) ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << " Inventario  ";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(3) "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << " Interactuar  ";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(4) ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << " Caracteristicas" << "\n"; 
 	cout << "\n";
 	cout << "|-        " << Jugador.Nombre << "        -|";
-	cout << "\n  Nivel " << Jugador.Nivel;
-	cout << "\n  XP " << Jugador.CantXP << " / " << Jugador.CantXPMaxima;
-	cout << "\n  Salud " << Jugador.Salud << " / " << Jugador.SaludMax; 
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << "\n  Nivel "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.Nivel;
+	SetConsoleTextAttribute(hConsole, 3);
+	cout << "\n  XP ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.CantXP;
+	SetConsoleTextAttribute(hConsole, 3);
+	cout << " / ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.CantXPMaxima;
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << "\n  Salud "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.Salud;
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << " / "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.SaludMax; 
 	if (mentorActivo == true){
+		SetConsoleTextAttribute(hConsole, 3);
 		cout << "\n  Pocion del mentor activa";
 	}
-	cout << "\n\n  Oro " << Jugador.Oro;
-	cout << "\n\n";
+	SetConsoleTextAttribute(hConsole, 6);
+	cout << "\n\n  Oro "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.Oro;
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "\n\nElige la opcion que vas a elegir: ";
+	SetConsoleTextAttribute(hConsole, 7);
 	cin >> Opcion;
 	if (Opcion == 1){
 		darPaso();
@@ -1579,14 +1621,54 @@ void mostCombate(){
 
 void mostStats(){
 	system("cls");
-	cout << "--        Caracteristicas de " << Jugador.Nombre << " (Nivel "  << Jugador.Nivel << ")         --\n";
-	cout << "\nPuntos disponibles: " << Jugador.puntosDisp;
-	cout << "\n1 - Fuerza - " << Jugador.Caracteristicas.Fuerza << " (Bonus " << setprecision(2) << modificadorAtaque << "x de ataque)";
-	cout << "\n2 - Resistencia - " << Jugador.Caracteristicas.Resistencia << " (Bonus " << setprecision(2) << modificadorResistencia << "x de resistencia)";
-	cout << "\n3 - Regeneracion Fisica - " << Jugador.Caracteristicas.RegFisica << " (+" << regeneracionFisica << " de salud regenerada luego de un combate)";
-	cout << "\n4 - Vitalidad - " << Jugador.Caracteristicas.Vitalidad << " (+" << saludMas << " de salud maxima)";
-	cout << "\n\nSalud: " << Jugador.Salud << " / " << Jugador.SaludMax;
-	cout << "\nXP: " << Jugador.CantXP << " / " << Jugador.CantXPMaxima;
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "--        Caracteristicas de " << Jugador.Nombre << " (";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << "Nivel ";  
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.Nivel << ")         --\n";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "\nPuntos disponibles: "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.puntosDisp;
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "\n1 -"; 
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << " Fuerza "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "- " << Jugador.Caracteristicas.Fuerza << " (Bonus " << setprecision(2) << modificadorAtaque << "x de ataque)";
+	cout << "\n2 -";
+	SetConsoleTextAttribute(hConsole, 9);
+	cout << " Resistencia ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "- " << Jugador.Caracteristicas.Resistencia << " (Bonus " << setprecision(2) << modificadorResistencia << "x de resistencia)";
+	cout << "\n3 -";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << " Regeneracion Fisica ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "- " << Jugador.Caracteristicas.RegFisica << " (+" << regeneracionFisica << " de salud regenerada luego de un combate)";
+	cout << "\n4 -";
+	SetConsoleTextAttribute(hConsole, 11);
+	cout << " Vitalidad ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "- " << Jugador.Caracteristicas.Vitalidad << " (+" << saludMas << " de salud maxima)";
+	cout << "\n\n";
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << "Salud ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.Salud; 
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << " / ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.SaludMax;
+	SetConsoleTextAttribute(hConsole, 3);
+	cout << "\nXP "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.CantXP; 
+	SetConsoleTextAttribute(hConsole, 3);
+	cout << " / ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.CantXPMaxima;
 	cout << "\n\nArma equipada: " << Jugador.ArmaEquipada.Nombre << " | Nivel " << Jugador.ArmaEquipada.Nvl;
 	// LA SOLUCION
 	// no sera la mejor pero bue, es mejor q nada
@@ -1661,10 +1743,24 @@ void mostStats(){
 int main() {
 	int txt;
 	bool seleccionado;
+	SetConsoleTextAttribute(hConsole, 6);
 	cout << "Bienvenido a Sacred Lite!\n\n";
-	cout << "Clases disponibles:\nGladiador (1) - Guerrero con la habilidad y entrenamiento necesarios para usar gran parte de las armas. Es un maestro de la hacha y de las armas pesadas, ademas de ser muy fuerte y resistente.\nEnano (2) - Tiene poca resistencia y fuerza, pero se cura mucho luego de una batalla. Aun asi, debe estar equipado correctamente.\n";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "Clases disponibles:\n\n";
+	SetConsoleTextAttribute(hConsole, 7);
+	cout << "1. ";
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << "Gladiador "; 
+	SetConsoleTextAttribute(hConsole, 7);
+	cout << " -\nGuerrero con la habilidad y entrenamiento necesarios para usar gran parte de las armas. Es un maestro de la hacha y de las armas pesadas, ademas de ser muy fuerte y resistente.\n\n2. ";
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << "Enano "; 
+	SetConsoleTextAttribute(hConsole, 7);
+	cout << "-\nTiene poca resistencia y fuerza, pero se cura mucho luego de una batalla. Aun asi, debe estar equipado correctamente.\n";
 	do{
+		SetConsoleTextAttribute(hConsole, 14);
 		cout << "\nDefina su clase poniendo el numero correspondiente: ";
+		SetConsoleTextAttribute(hConsole, 7);
 		cin >> txt;
 		if (txt == 1 || txt == 2){
 			Jugador.Clase = txt;
@@ -1677,13 +1773,20 @@ int main() {
 	system("cls"); 
 	seleccionado = false;
 	do{
+		SetConsoleTextAttribute(hConsole, 7);
 		if (Jugador.Clase == 1){
-			cout << "Clase seleccionada: Gladiador\n";
+			cout << "Clase seleccionada: ";
+			SetConsoleTextAttribute(hConsole, 12);
+			cout << "Gladiador\n";
 		}
 		else{
-			cout << "Clase seleccionada: Enano\n";
+			cout << "Clase seleccionada: ";
+			SetConsoleTextAttribute(hConsole, 12);
+			cout << "Enano\n";
 		}
+		SetConsoleTextAttribute(hConsole, 14);
 		cout << "\nEscriba el nombre del personaje: ";
+		SetConsoleTextAttribute(hConsole, 7);
 		std::getline(std::cin >> std::ws, Jugador.Nombre);
 		seleccionado = true;
 	}while(seleccionado != true);
