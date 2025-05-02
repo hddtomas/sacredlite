@@ -2,6 +2,7 @@
 
 ## Descripción
 Videojuego diablo-like fuertemente inspirado en Sacred hecho en C++.
+
 Es un videojuego tipo terminal, por lo que no contiene gráficos más que texto.
 
 ## Mecánicas
