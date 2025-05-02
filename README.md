@@ -1,7 +1,7 @@
 # Sacred Lite
 
 ## Descripción
-Videojuego diablo-like fuertemente inspirado en Sacred hecho en C++.
+Videojuego diablo-like fuertemente inspirado en Sacred hecho en C++, hecho como proyecto final para el primer trimestre de la materia "Laboratorio de Programación" en 5° año.
 
 Es un videojuego tipo terminal, por lo que no contiene gráficos más que texto.
 
