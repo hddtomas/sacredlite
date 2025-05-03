@@ -1669,7 +1669,15 @@ void mostStats(){
 	cout << " / ";
 	SetConsoleTextAttribute(hConsole, 15);
 	cout << Jugador.CantXPMaxima;
-	cout << "\n\nArma equipada: " << Jugador.ArmaEquipada.Nombre << " | Nivel " << Jugador.ArmaEquipada.Nvl;
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "\n\nArma equipada: "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaEquipada.Nombre;
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << " | "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "Nivel ";
+	cout << Jugador.ArmaEquipada.Nvl;
 	// LA SOLUCION
 	// no sera la mejor pero bue, es mejor q nada
 	int multiplicador1 = Jugador.ArmaEquipada.DMGF * modificadorAtaque;
@@ -1680,11 +1688,65 @@ void mostStats(){
 	int multiplicador6 = Jugador.ArmaduraEquipada.RESFG * modificadorResistencia;
 	int multiplicador7 = Jugador.ArmaduraEquipada.RESV * modificadorResistencia;
 	int multiplicador8 = Jugador.ArmaduraEquipada.RESM * modificadorResistencia;
-	cout << "\nAtaque: Fisico " << Jugador.ArmaEquipada.DMGF + multiplicador1 << " - Fuego " << Jugador.ArmaEquipada.DMGFG + multiplicador2 << " - Veneno " << Jugador.ArmaEquipada.DMGV + multiplicador3 << " - Magico " << Jugador.ArmaEquipada.DMGM + multiplicador4;
-	cout << "\n\nArmadura equipada: " << Jugador.ArmaduraEquipada.Nombre << " | Nivel " << Jugador.ArmaduraEquipada.Nvl;
-	cout << "\nResistencia: Fisico " << Jugador.ArmaduraEquipada.RESF + multiplicador5 << " - Fuego " << Jugador.ArmaduraEquipada.RESFG + multiplicador6 << " - Veneno " << Jugador.ArmaduraEquipada.RESV + multiplicador7 << " - Magico " << Jugador.ArmaduraEquipada.RESM + multiplicador8;
-	cout << "\n\nCantidad de muertes: " << Jugador.muertes << " muertes";
-	cout << "\n" << texto2 << "\n" << "(1)  Volver  (2)  Asignar puntos" << "\n";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "\nAtaque: Fisico "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaEquipada.DMGF + multiplicador1 << " -"; 
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << " Fuego ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaEquipada.DMGFG + multiplicador2 << " -";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << " Veneno "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaEquipada.DMGV + multiplicador3 << " -";
+	SetConsoleTextAttribute(hConsole, 9);
+	cout << " Magico ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaEquipada.DMGM + multiplicador4;
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "\n\nArmadura equipada: ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaduraEquipada.Nombre;
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << " |";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << " Nivel " << Jugador.ArmaduraEquipada.Nvl;
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "\nResistencia: Fisica "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaduraEquipada.RESF + multiplicador5 << " -"; 
+	SetConsoleTextAttribute(hConsole, 12);
+	cout << " Fuego ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaduraEquipada.RESFG + multiplicador6 << " -";
+	SetConsoleTextAttribute(hConsole, 10);
+	cout << " Veneno "; 
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaduraEquipada.RESV + multiplicador7 << " -";
+	SetConsoleTextAttribute(hConsole, 9);
+	cout << " Magica ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.ArmaduraEquipada.RESM + multiplicador8;
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "\n\nCantidad de muertes: ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << Jugador.muertes;
+	SetConsoleTextAttribute(hConsole, 12);
+	if (Jugador.muertes != 1){
+		cout << " muertes";	
+	}
+	else{
+		cout << " muerte";
+	}
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "\n" << texto2 << "\n" << "(1)  ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "Volver  ";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(2)  ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "Asignar puntos" << "\n";
 	cin >> Opcion;
 	if (Opcion == 1){
 		jugar();
