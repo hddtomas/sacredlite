@@ -6,6 +6,7 @@
 #include <time.h> 
 #include <iomanip>
 #include <windows.h>
+#include <vector>
 using namespace std;
 
 HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -74,7 +75,7 @@ struct Enemigo{
 };
 
 Datos Jugador;
-Item Inventario[20];
+vector<Item> Inventario;
 int Dificultad;
 int Opcion;
 int regeneracionFisica = 0;
@@ -194,14 +195,14 @@ string agregarArmadura(int id, int nivel, string nombre, Armadura datos){
 	// Pechera.Nvl = 1;
  	// agregarArmadura(4, Pechera.Nvl, "Armadura del Astolfo", Pechera);
  	int cantItems = 0;
-	for (int i=0;i<20;i++){
+	for (int i=0;i<Inventario.size();i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
 	if (Jugador.InvUsado < 20){
-		for (int i=0;i<20;i++){
+		for (int i=0;i<Inventario.size();i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
 				Inventario[i].nivel = nivel;
@@ -227,14 +228,14 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 	// Daga.Tipo = "Daga";
  	// agregarArma(3, Daga.Nvl, "Daga del Astolfo", Daga);
  	int cantItems = 0;
-	for (int i=0;i<20;i++){
+	for (int i=0;i<Inventario.size();i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
 	if (Jugador.InvUsado < 20){
-		for (int i=0;i<20;i++){
+		for (int i=0;i<Inventario.size();i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
 				Inventario[i].nivel = nivel;
@@ -253,14 +254,14 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 
 string agregarItem(int id, int nivel, string nombre){
 	int cantItems = 0;
-	for (int i=0;i<20;i++){
+	for (int i=0;i<Inventario.size();i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
 	if (Jugador.InvUsado < 20){
-		for (int i=0;i<20;i++){
+		for (int i=0;i<Inventario.size();i++){
 			if (Inventario[i].id == 0){
 				Inventario[i].id = id;
 				Inventario[i].nivel = nivel;
@@ -325,7 +326,7 @@ string usarItem(int id, int nivel, int Opcion){
 
 void obtenerLoot(){
 	int cantItems = 0;
-	for (int i=0;i<20;i++){
+	for (int i=0;i<Inventario.size();i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
@@ -817,14 +818,14 @@ void interactuar(){
 void inv(){ // Inventario
 	system("cls");
 	int cantItems = 0;
-	for (int i=0;i<20;i++){
+	for (int i=0;i<Inventario.size();i++){
 		if (Inventario[i].id != 0){
 			cantItems++;
 		}
 	}
 	Jugador.InvUsado = cantItems;
 	cout << "--        Inventario de " << Jugador.Nombre << " (" << Jugador.InvUsado << "/20)        --\n";
-	for (int i=0;i<20;i++){
+	for (int i=0;Inventario.size();i++){
 		if (Inventario[i].id != 0){
 			if (Inventario[i].Datos.Tipo != "?"){
 				if (Inventario[i].Datos.enUso == false){
@@ -1480,7 +1481,7 @@ void mostCombate(){
 			Jugador.muertes++;
 			cout << "\n\n";
 			system("pause");
-			for (int i=0;i<10;i++){
+			for (int i=0;Inventario.size();i++){
 				if (Inventario[i].Datos.enUso == false){
 					if (Inventario[i].DatosB.enUso == false){
 						Inventario[i].id = 0;
@@ -1498,7 +1499,7 @@ void mostCombate(){
 					}
 				}
 			}
-			Jugador.Oro = 0;
+			Jugador.Oro = Jugador.Oro / 2;
 			Jugador.Salud = Jugador.SaludMax;
 			jugar();
 		}
