@@ -76,6 +76,8 @@ struct Enemigo{
 
 Datos Jugador;
 vector<Item> Inventario;
+Item ItemTMP;
+
 int Dificultad;
 int Opcion;
 int regeneracionFisica = 0;
@@ -194,27 +196,15 @@ string agregarArmadura(int id, int nivel, string nombre, Armadura datos){
 	// Pechera.Nombre = "Armadura del Astolfo";
 	// Pechera.Nvl = 1;
  	// agregarArmadura(4, Pechera.Nvl, "Armadura del Astolfo", Pechera);
- 	int cantItems = 0;
 	for (int i=0;i<Inventario.size();i++){
-		if (Inventario[i].id != 0){
-			cantItems++;
+		if (Inventario[i].id == 0){
+			ItemTMP.id = id;
+			ItemTMP.nivel = nivel;
+			ItemTMP.Nombre = nombre;
+			ItemTMP.DatosB = datos;
+			Inventario.push_back(ItemTMP);
+			break;
 		}
-	}
-	Jugador.InvUsado = cantItems;
-	if (Jugador.InvUsado < 20){
-		for (int i=0;i<Inventario.size();i++){
-			if (Inventario[i].id == 0){
-				Inventario[i].id = id;
-				Inventario[i].nivel = nivel;
-				Inventario[i].Nombre = nombre;
-				Inventario[i].DatosB = datos;
-				Jugador.InvUsado++;
-				break;
-			}
-		}
-	}
-	else{
-		return "El inventario esta lleno.";
 	}
 	return "OK.";
 }
@@ -227,52 +217,28 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 	// Daga.Nvl = 1;
 	// Daga.Tipo = "Daga";
  	// agregarArma(3, Daga.Nvl, "Daga del Astolfo", Daga);
- 	int cantItems = 0;
 	for (int i=0;i<Inventario.size();i++){
-		if (Inventario[i].id != 0){
-			cantItems++;
+		if (Inventario[i].id == 0){
+			ItemTMP.id = id;
+			ItemTMP.nivel = nivel;
+			ItemTMP.Nombre = nombre;
+			ItemTMP.Datos = datos;
+			Inventario.push_back(ItemTMP);
+			break;
 		}
-	}
-	Jugador.InvUsado = cantItems;
-	if (Jugador.InvUsado < 20){
-		for (int i=0;i<Inventario.size();i++){
-			if (Inventario[i].id == 0){
-				Inventario[i].id = id;
-				Inventario[i].nivel = nivel;
-				Inventario[i].Nombre = nombre;
-				Inventario[i].Datos = datos;
-				Jugador.InvUsado++;
-				break;
-			}
-		}
-	}
-	else{
-		return "El inventario esta lleno.";
 	}
 	return "OK.";
 }
 
 string agregarItem(int id, int nivel, string nombre){
-	int cantItems = 0;
 	for (int i=0;i<Inventario.size();i++){
-		if (Inventario[i].id != 0){
-			cantItems++;
+		if (Inventario[i].id == 0){
+			ItemTMP.id = id;
+			ItemTMP.nivel = nivel;
+			ItemTMP.Nombre = nombre;
+			Inventario.push_back(ItemTMP);
+			break;
 		}
-	}
-	Jugador.InvUsado = cantItems;
-	if (Jugador.InvUsado < 20){
-		for (int i=0;i<Inventario.size();i++){
-			if (Inventario[i].id == 0){
-				Inventario[i].id = id;
-				Inventario[i].nivel = nivel;
-				Inventario[i].Nombre = nombre;
-				Jugador.InvUsado++;
-				break;
-			}
-		}
-	}
-	else{
-		return "El inventario esta lleno.";
 	}
 	return "OK.";
 }
@@ -325,13 +291,8 @@ string usarItem(int id, int nivel, int Opcion){
 }
 
 void obtenerLoot(){
-	int cantItems = 0;
-	for (int i=0;i<Inventario.size();i++){
-		if (Inventario[i].id != 0){
-			cantItems++;
-		}
-	}
-	Jugador.InvUsado = cantItems;
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "--       Item obtenido        --\n";
 	if (Jugador.InvUsado < 20){
 		Item loot;
 		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
@@ -817,40 +778,61 @@ void interactuar(){
 
 void inv(){ // Inventario
 	system("cls");
-	int cantItems = 0;
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "--        Inventario de " << Jugador.Nombre << "        --\n";
 	for (int i=0;i<Inventario.size();i++){
-		if (Inventario[i].id != 0){
-			cantItems++;
-		}
-	}
-	Jugador.InvUsado = cantItems;
-	cout << "--        Inventario de " << Jugador.Nombre << " (" << Jugador.InvUsado << "/20)        --\n";
-	for (int i=0;Inventario.size();i++){
 		if (Inventario[i].id != 0){
 			if (Inventario[i].Datos.Tipo != "?"){
 				if (Inventario[i].Datos.enUso == false){
-					cout << "\n" << i << " - " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ") (Ataque | Fisico " << Inventario[i].Datos.DMGF << " - Fuego " << Inventario[i].Datos.DMGFG << " - Veneno " << Inventario[i].Datos.DMGV << " - Magico " << Inventario[i].Datos.DMGM << ")"; 
+					SetConsoleTextAttribute(hConsole, 14);
+					cout << "\n(" << i+1 << ") ";
+					SetConsoleTextAttribute(hConsole, 15);
+					cout << "- " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ") (Ataque | Fisico " << Inventario[i].Datos.DMGF << " - Fuego " << Inventario[i].Datos.DMGFG << " - Veneno " << Inventario[i].Datos.DMGV << " - Magico " << Inventario[i].Datos.DMGM << ")"; 
 				}
 				else{
-					cout << "\n" << i << " - " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ") (EN USO) (Ataque | Fisico " << Inventario[i].Datos.DMGF << " - Fuego " << Inventario[i].Datos.DMGFG << " - Veneno " << Inventario[i].Datos.DMGV << " - Magico " << Inventario[i].Datos.DMGM << ")"; 
+					SetConsoleTextAttribute(hConsole, 14);
+					cout << "\n(" << i+1 << ") ";
+					SetConsoleTextAttribute(hConsole, 15);
+					cout << "- " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ") (EN USO) (Ataque | Fisico " << Inventario[i].Datos.DMGF << " - Fuego " << Inventario[i].Datos.DMGFG << " - Veneno " << Inventario[i].Datos.DMGV << " - Magico " << Inventario[i].Datos.DMGM << ")"; 
 				}
 			}
 			else{
 				if (Inventario[i].DatosB.Nombre != "?"){
 					if (Inventario[i].DatosB.enUso == false){
-						cout << "\n" << i << " - " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ") (Resistencia | Fisico " << Inventario[i].DatosB.RESF << " - Fuego " << Inventario[i].DatosB.RESFG << " - Veneno " << Inventario[i].DatosB.RESV << " - Magico " << Inventario[i].DatosB.RESM << ")"; 
+						SetConsoleTextAttribute(hConsole, 14);
+						cout << "\n(" << i+1 << ") ";
+						SetConsoleTextAttribute(hConsole, 15);
+						cout << "- " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ") (Resistencia | Fisico " << Inventario[i].DatosB.RESF << " - Fuego " << Inventario[i].DatosB.RESFG << " - Veneno " << Inventario[i].DatosB.RESV << " - Magico " << Inventario[i].DatosB.RESM << ")"; 
 					}
 					else{
-						cout << "\n" << i << " - " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ") (EN USO) (Resistencia | Fisico " << Inventario[i].DatosB.RESF << " - Fuego " << Inventario[i].DatosB.RESFG << " - Veneno " << Inventario[i].DatosB.RESV << " - Magico " << Inventario[i].DatosB.RESM << ")"; 
+						SetConsoleTextAttribute(hConsole, 14);
+						cout << "\n(" << i+1 << ") ";
+						SetConsoleTextAttribute(hConsole, 15);
+						cout << "- " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ") (EN USO) (Resistencia | Fisico " << Inventario[i].DatosB.RESF << " - Fuego " << Inventario[i].DatosB.RESFG << " - Veneno " << Inventario[i].DatosB.RESV << " - Magico " << Inventario[i].DatosB.RESM << ")"; 
 					}
 				}
 				else{
-					cout << "\n" << i << " - " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ")"; 
+					SetConsoleTextAttribute(hConsole, 14);
+					cout << "\n(" << i+1 << ") ";
+					SetConsoleTextAttribute(hConsole, 15);
+					cout << "- " << Inventario[i].Nombre << " (Nivel " << Inventario[i].nivel << ")"; 
 				}
 			}
 		}
 	}
-	cout << "\n" << texto2 << "\n" << "(1)  Volver  (2)  Usar item  (3)  Soltar item" << "\n"; 
+	cout << "\n" << texto2 << "\n";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(1)";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "  Volver  ";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(2)  ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "Usar item";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "  (3)";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << "  Soltar item" << "\n"; 
 	texto2 = "";
 	cin >> Opcion;
 	if (Opcion == 1){
@@ -1804,6 +1786,8 @@ void mostStats(){
 }
 
 int main() {
+	system("title Sacred Lite v1.0.4");
+	
 	int txt;
 	bool seleccionado;
 	SetConsoleTextAttribute(hConsole, 6);
@@ -1885,8 +1869,10 @@ int main() {
 	Jugador.ArmaduraEquipada.Nvl = 1;
 	region = "Region de Ancaria";
 	texto = "Te despiertas en un valle, completamente desarmado.\nEl mundo parece haber cambiado..";
-	Inventario[0].id = 1;
-	Inventario[0].Nombre = "Pocion de Curacion";
+	
+	ItemTMP.id = 1;
+	ItemTMP.Nombre = "Pocion de Curacion";
+	Inventario.push_back(ItemTMP);
 	jugar(); 
 	return 0;
 }
