@@ -22,7 +22,7 @@ struct Armamento{ // Almacena datos del arma equipada
 	bool enUso = false;
 };
 
-struct Armadura{
+struct Armadura{ // Almacena datos de la armadura
 	string Nombre = "?";
 	int Nvl = 1;
 	int RESF = 0;
@@ -32,7 +32,7 @@ struct Armadura{
 	bool enUso = false;
 };
 
-struct Estadisticas{
+struct Estadisticas{ // Almacena estadisticas del jugador
 	int Fuerza = 0;
 	int Resistencia = 0;
 	int RegFisica = 0;
@@ -74,20 +74,28 @@ struct Enemigo{
 	Armadura ArmaduraEquipada;
 };
 
+// Datos importantes
 Datos Jugador;
 vector<Item> Inventario;
 Item ItemTMP;
 
+// Enteros
 int Dificultad;
 int Opcion;
 int regeneracionFisica = 0;
 int saludMas = 0;
 int seed = 1;
+
+// Modificadores
 float modificadorAtaque = 0.00;
 float modificadorResistencia = 0.00;
+
+// Textos en pantalla
 string texto;
 string texto2;
 string region;
+
+// Chequeos
 bool mentorActivo = false;
 bool turnoActivo = false;
 bool turnoEnemigo = false;
@@ -291,6 +299,7 @@ string usarItem(int id, int nivel, int Opcion){
 }
 
 void obtenerLoot(){
+	system("CLS");
 	SetConsoleTextAttribute(hConsole, 15);
 	cout << "--       Item obtenido        --\n";
 	Item loot;
@@ -722,16 +731,17 @@ void obtenerLoot(){
 	int multiplicador6 = Jugador.ArmaduraEquipada.RESFG * modificadorResistencia;
 	int multiplicador7 = Jugador.ArmaduraEquipada.RESV * modificadorResistencia;
 	int multiplicador8 = Jugador.ArmaduraEquipada.RESM * modificadorResistencia;
+	SetConsoleTextAttribute(hConsole, 15);
+	printf("\n");
 	if (loot.id == 3 || loot.id == 4 || loot.id == 5){
-		SetConsoleTextAttribute(hConsole, 15);
 		cout << loot.Nombre;
 		SetConsoleTextAttribute(hConsole, 14);
 		cout << " | "; 
 		SetConsoleTextAttribute(hConsole, 15);
 		cout << "Nivel ";
-		cout << loot.nivel;
+		cout << loot.nivel << "\nAtaque: ";
 		SetConsoleTextAttribute(hConsole, 14);
-		cout << "\nAtaque: Fisico "; 
+		cout << "\nFisico "; 
 		SetConsoleTextAttribute(hConsole, 15);
 		cout << loot.Datos.DMGF + multiplicador1 << " -"; 
 		SetConsoleTextAttribute(hConsole, 12);
@@ -747,6 +757,51 @@ void obtenerLoot(){
 		SetConsoleTextAttribute(hConsole, 15);
 		cout << loot.Datos.DMGM + multiplicador4;
 	}
+	else if (loot.id == 6){
+		cout << loot.Nombre;
+		SetConsoleTextAttribute(hConsole, 14);
+		cout << " | "; 
+		SetConsoleTextAttribute(hConsole, 15);
+		cout << "Nivel ";
+		cout << loot.nivel << "\nDefensa: ";
+		SetConsoleTextAttribute(hConsole, 14);
+		cout << "Fisica "; 
+		SetConsoleTextAttribute(hConsole, 15);
+		cout << loot.DatosB.RESF + multiplicador5 << " -"; 
+		SetConsoleTextAttribute(hConsole, 12);
+		cout << " Fuego ";
+		SetConsoleTextAttribute(hConsole, 15);
+		cout << loot.DatosB.RESFG + multiplicador6 << " -";
+		SetConsoleTextAttribute(hConsole, 10);
+		cout << " Veneno "; 
+		SetConsoleTextAttribute(hConsole, 15);
+		cout << loot.DatosB.RESV + multiplicador7 << " -";
+		SetConsoleTextAttribute(hConsole, 9);
+		cout << " Magica ";
+		SetConsoleTextAttribute(hConsole, 15);
+		cout << loot.DatosB.RESM + multiplicador8;
+	}
+	else{
+		cout << loot.Nombre;
+		SetConsoleTextAttribute(hConsole, 14);
+		cout << " | "; 
+		SetConsoleTextAttribute(hConsole, 15);
+		cout << "Nivel ";
+		cout << loot.nivel;
+	}
+	printf("\n\nDeseas agarrar este objeto?\n\n");
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(1) ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << " Si  ";
+	SetConsoleTextAttribute(hConsole, 14);
+	cout << "(2) ";
+	SetConsoleTextAttribute(hConsole, 15);
+	cout << " No  ";
+	SetConsoleTextAttribute(hConsole, 14);
+	printf("\n\nElige la opcion que vas a elegir: ");
+	SetConsoleTextAttribute(hConsole, 15);
+	scanf("%d", &Opcion);
 	texto = texto + "\nObtuviste " + loot.Nombre + " y ahora esta en tu inventario.";
 	jugar();
 }
