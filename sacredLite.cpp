@@ -204,16 +204,11 @@ string agregarArmadura(int id, int nivel, string nombre, Armadura datos){
 	// Pechera.Nombre = "Armadura del Astolfo";
 	// Pechera.Nvl = 1;
  	// agregarArmadura(4, Pechera.Nvl, "Armadura del Astolfo", Pechera);
-	for (int i=0;i<Inventario.size();i++){
-		if (Inventario[i].id == 0){
-			ItemTMP.id = id;
-			ItemTMP.nivel = nivel;
-			ItemTMP.Nombre = nombre;
-			ItemTMP.DatosB = datos;
-			Inventario.push_back(ItemTMP);
-			break;
-		}
-	}
+	ItemTMP.id = id;
+	ItemTMP.nivel = nivel;
+	ItemTMP.Nombre = nombre;
+	ItemTMP.DatosB = datos;
+	Inventario.push_back(ItemTMP);
 	return "OK.";
 }
 
@@ -225,29 +220,19 @@ string agregarArma(int id, int nivel, string nombre, Armamento datos){
 	// Daga.Nvl = 1;
 	// Daga.Tipo = "Daga";
  	// agregarArma(3, Daga.Nvl, "Daga del Astolfo", Daga);
-	for (int i=0;i<Inventario.size();i++){
-		if (Inventario[i].id == 0){
-			ItemTMP.id = id;
-			ItemTMP.nivel = nivel;
-			ItemTMP.Nombre = nombre;
-			ItemTMP.Datos = datos;
-			Inventario.push_back(ItemTMP);
-			break;
-		}
-	}
+	ItemTMP.id = id;
+	ItemTMP.nivel = nivel;
+	ItemTMP.Nombre = nombre;
+	ItemTMP.Datos = datos;
+	Inventario.push_back(ItemTMP);
 	return "OK.";
 }
 
 string agregarItem(int id, int nivel, string nombre){
-	for (int i=0;i<Inventario.size();i++){
-		if (Inventario[i].id == 0){
-			ItemTMP.id = id;
-			ItemTMP.nivel = nivel;
-			ItemTMP.Nombre = nombre;
-			Inventario.push_back(ItemTMP);
-			break;
-		}
-	}
+	ItemTMP.id = id;
+	ItemTMP.nivel = nivel;
+	ItemTMP.Nombre = nombre;
+	Inventario.push_back(ItemTMP);
 	return "OK.";
 }
 
@@ -303,20 +288,17 @@ void obtenerLoot(){
 	SetConsoleTextAttribute(hConsole, 15);
 	cout << "--       Item obtenido        --\n";
 	Item loot;
-	agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	srand(time(0));
 	int N = ((rand() % 39));
 	if (N == 0){
 		loot.id = 1;
 		loot.nivel = Jugador.Nivel;
 		loot.Nombre = "Pocion de Curacion";
-		agregarItem(loot.id, loot.nivel, loot.Nombre);
 	}
 	else if (N == 1){
 		loot.id = 2;
 		loot.nivel = Jugador.Nivel;
 	   	loot.Nombre = "Pocion del Mentor";
-	   	agregarItem(loot.id, loot.nivel, loot.Nombre);
 	}
 	else if (N == 2){
 		loot.id = 3;
@@ -327,7 +309,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Daga";
 		loot.Datos.Nombre = "Daga comun";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 3){
 		loot.id = 3;
@@ -337,7 +318,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Daga";
 		loot.Datos.Nombre = "Daga del Novato";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 4){
 		loot.id = 3;
@@ -348,7 +328,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Daga";
 		loot.Datos.Nombre = "Daga oxidada";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 5){
 		loot.id = 4;
@@ -359,7 +338,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada del Inframundo";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 6){
 		loot.id = 4;
@@ -371,7 +349,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada de Astolfo";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 7){
 		loot.id = 4;
@@ -383,7 +360,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada de la Magia Oscura";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 8){
 		loot.id = 4;
@@ -394,7 +370,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada del Angel";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 9){
 		loot.id = 4;
@@ -405,7 +380,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada de la Lealtad";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 10){
 		loot.id = 4;
@@ -415,7 +389,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada del plebeyo";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 11){
 		loot.id = 4;
@@ -427,7 +400,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada del Rey";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 12){
 		loot.id = 5;
@@ -437,7 +409,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Hacha";
 		loot.Datos.Nombre = "Hacha desgastada";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 13){
 		loot.id = 5;
@@ -448,7 +419,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Hacha";
 		loot.Datos.Nombre = "Hacha del Guerrero";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 14){
 		loot.id = 5;
@@ -458,7 +428,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Hacha";
 		loot.Datos.Nombre = "Hacha del Novato";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 15){
 		loot.id = 5;
@@ -469,7 +438,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Hacha";
 		loot.Datos.Nombre = "Hacha de la Sabiduria";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 16){
 		loot.id = 5;
@@ -480,7 +448,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Hacha";
 		loot.Datos.Nombre = "Hacha venenosa";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 17){
 		loot.id = 6;
@@ -490,7 +457,6 @@ void obtenerLoot(){
 		loot.DatosB.RESV = 5 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura del Ladron";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 18){
 		loot.id = 6;
@@ -501,7 +467,6 @@ void obtenerLoot(){
 		loot.DatosB.RESFG = 5 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura de la Realeza";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 19){
 		loot.id = 6;
@@ -513,7 +478,6 @@ void obtenerLoot(){
 		loot.DatosB.RESM = 6 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura de Astolfo";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 20){
 		loot.id = 6;
@@ -524,7 +488,6 @@ void obtenerLoot(){
 		loot.DatosB.RESM = 3 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura del Diablo";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 21){
 		loot.id = 6;
@@ -536,7 +499,6 @@ void obtenerLoot(){
 		loot.DatosB.RESFG = 5 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura del Gato";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 22){
 		loot.id = 6;
@@ -546,7 +508,6 @@ void obtenerLoot(){
 		loot.DatosB.RESM = 4 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura del Emperador";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 23){
 		loot.id = 6;
@@ -556,7 +517,6 @@ void obtenerLoot(){
 		loot.DatosB.RESM = 18 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura celestial";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 24){
 		loot.id = 6;
@@ -566,7 +526,6 @@ void obtenerLoot(){
 		loot.DatosB.RESV = 17 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura del Enfermo";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 25){
 		loot.id = 6;
@@ -577,7 +536,6 @@ void obtenerLoot(){
 		loot.DatosB.RESFG = 4 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura del Rey";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 26){
 		loot.id = 6;
@@ -589,7 +547,6 @@ void obtenerLoot(){
 		loot.DatosB.RESM = 11 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura balanceada";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 27){
 		loot.id = 6;
@@ -600,7 +557,6 @@ void obtenerLoot(){
 		loot.DatosB.RESV = 5 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura de la Justicia";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 28){
 		loot.id = 6;
@@ -610,7 +566,6 @@ void obtenerLoot(){
 		loot.DatosB.RESM = 18 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura de la Magia Oscura";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 29){
 		loot.id = 5;
@@ -623,7 +578,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Hacha";
 		loot.Datos.Nombre = "Hacha del Rey";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 30){
 		loot.id = 4;
@@ -636,7 +590,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada balanceada";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 31){
 		loot.id = 4;
@@ -648,7 +601,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Espada";
 		loot.Datos.Nombre = "Espada de los Antiguos Esqueletos";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 32){
 		loot.id = 3;
@@ -661,7 +613,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Daga";
 		loot.Datos.Nombre = "Daga balanceada";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 33){
 		loot.id = 3;
@@ -673,7 +624,6 @@ void obtenerLoot(){
 		loot.Datos.Nvl = Jugador.Nivel;
 		loot.Datos.Tipo = "Daga";
 		loot.Datos.Nombre = "Daga infernal";
-		agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
 	}
 	else if (N == 34){
 		loot.id = 6;
@@ -683,7 +633,6 @@ void obtenerLoot(){
 		loot.DatosB.RESFG = 17 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura infernal";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 35){
 		loot.id = 6;
@@ -695,7 +644,6 @@ void obtenerLoot(){
 		loot.DatosB.RESV = 6 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura de la Paz";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 36){
 		loot.id = 6;
@@ -705,7 +653,6 @@ void obtenerLoot(){
 		loot.DatosB.RESM = 11 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura de la Gracia";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 37){
 		loot.id = 6;
@@ -715,13 +662,11 @@ void obtenerLoot(){
 		loot.DatosB.RESFG = 9 * Jugador.Nivel;
 		loot.DatosB.Nvl = Jugador.Nivel;
 		loot.DatosB.Nombre = "Armadura del Lobo";
-		agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
 	}
 	else if (N == 38){
 		loot.id = 7;
 	   	loot.nivel = Jugador.Nivel;
 	   	loot.Nombre = "Pocion del Turno";
-	   	agregarItem(loot.id, loot.nivel, loot.Nombre);
 	}
 	int multiplicador1 = Jugador.ArmaEquipada.DMGF * modificadorAtaque;
 	int multiplicador2 = Jugador.ArmaEquipada.DMGFG * modificadorAtaque;
@@ -802,7 +747,21 @@ void obtenerLoot(){
 	printf("\n\nElige la opcion que vas a elegir: ");
 	SetConsoleTextAttribute(hConsole, 15);
 	scanf("%d", &Opcion);
-	texto = texto + "\nObtuviste " + loot.Nombre + " y ahora esta en tu inventario.";
+	if (Opcion == 1){
+		if (loot.id == 3 || 4 || 5){
+			agregarArma(loot.id, loot.nivel, loot.Nombre, loot.Datos);
+		}
+		else if (loot.id == 6){
+			agregarArmadura(loot.id, loot.nivel, loot.Nombre, loot.DatosB);
+		}
+		else{
+			agregarItem(loot.id, loot.nivel, loot.Nombre);
+		}
+		texto = texto + "\nObtuviste " + loot.Nombre + " y ahora esta en tu inventario.";
+	}
+	else{
+		texto = texto + "\nNo obtuviste el item porque no lo agarraste.";
+	}
 	jugar();
 }
 
@@ -1511,7 +1470,7 @@ void mostCombate(){
 		texto2 = texto2 + "\nHaz perdido un total de " + std::to_string(suma) + " de vida!";
 		if (Jugador.Salud < 1){
 			Jugador.Salud = 0;
-			texto2 = texto2 + ".\nFuiste derrotado! Haz perdido todo tu inventario (excepto tu arma principal y armadura) y tu oro.";
+			texto2 = texto2 + ".\nFuiste derrotado! Haz perdido todo tu inventario (excepto tu arma principal y armadura) y la mitad de tu oro.";
 			texto = "Fuiste derrotado por " + Enemigo.Nombre + " de nivel " + std::to_string(Enemigo.Nivel) + "! Haz perdido todo tu inventario (excepto tu arma principal y armadura) y tu oro.";
 		}
 		if (jugadorEnvenenado == true && Jugador.Salud > 0){
